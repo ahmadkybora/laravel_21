@@ -22,7 +22,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::namespace('Panel')->group(function () {
     Route::prefix('panel')->group(function () {
-        Route::get('user', [UserController::class, 'index'])->name('index');
+        Route::get('users', [UserController::class, 'index'])->name('index')->middleware('policy');
     });
 });
 /*

@@ -16,7 +16,7 @@ class UserController extends Controller
         $this->user = new Repository($user);
     }
 
-    public function index()
+    public function index(Request $request)
     {
         $users = $this->user->all();
         return $users;
