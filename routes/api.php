@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Panel\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,6 +20,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::namespace('Panel')->group(function () {
+    Route::prefix('panel')->group(function () {
+        Route::get('user', [UserController::class, 'index'])->name('index');
+    });
+});
 /*
  * Authentication Routes.
  */
