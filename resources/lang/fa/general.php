@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'accessDenied' => 'access denied',
-    'success' => 'Success',
-    'againLater' => 'please try again later',
+    'access denied' => 'دسترسی ممنوع شد',
+    'success' => 'موفقیت',
+    'againLater' => 'لطفا بعدا دوباره امتحان کنید',
 ];

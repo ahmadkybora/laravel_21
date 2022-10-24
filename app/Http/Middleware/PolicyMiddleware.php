@@ -17,23 +17,17 @@ class PolicyMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        dd($request->route());
-        $access = ['view'];
-        switch (Gate::denies('view', $request->user()))
+        switch($request->route()->getName())
         {
-            case 'view':
-                return response()->json([
-                    'state' => false,
-                    'message' => 'access denied',
-                    'data' => null,
-                ], 403);
+            case 'user-index':
+                if(!Gate::denies('view', $request->user()))
+                    return response()->json([
+                        'state' => false,
+                        'message' => __('general.accessDenied'),
+                        'data' => null,
+                    ], 403);
 
-            case 'view':
-                return response()->json([
-                    'state' => false,
-                    'message' => 'access denied',
-                    'data' => null,
-                ], 403);
+            default;
         }
 
         return $next($request);

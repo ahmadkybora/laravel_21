@@ -16,20 +16,20 @@ use App\Http\Controllers\Panel\UserController;
 */
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    Route::get('logout', 'Auth\AuthController@logout')->name('logout');
+    Route::get('logout', [Auth\AuthController::class, 'logout'])->name('logout');
     return $request->user();
 });
 
-Route::namespace('Panel')->group(function () {
+Route::middleware('policy')->namespace('Panel')->group(function () {
     Route::prefix('panel')->group(function () {
-        Route::get('users', [UserController::class, 'index'])->name('index')->middleware('policy');
+        Route::get('users', [UserController::class, 'index'])->name('user-index');
     });
 });
 /*
  * Authentication Routes.
  */
 Route::namespace('Auth')->group(function () {
-    Route::post('register', 'AuthController@register')->name('register');
-    Route::post('login', 'AuthController@login')->name('login');
+    Route::post('register', [AuthController::class, 'register'])->name('register');
+    Route::post('login', [AuthController::class, 'login'])->name('login');
 });
 
