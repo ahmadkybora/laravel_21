@@ -8,20 +8,30 @@ use App\Repositories\Repository;
 use App\Filters\Filter;
 use App\Http\Requests\UserRequest;
 use App\Http\Controllers\Controller;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class UserController extends Controller
 {
     protected $user;
+    protected $filter;
     public function __construct(User $user)
     {
-        // $this->user = new Repository($user);
-        $this->user = new Filter($user);
+        $this->user = new Repository($user);
+        $this->filter = new Filter($user);
     }
 
     public function index(Request $request)
     {
+        $users = $this->filter->filterByAll($request);
+        // dd(count(array_keys($request->filter)));
+        // for($i = 0; $i < count(array_keys($request->filter)); $i++) {
+        //     // dd($i);
+        // $users = QueryBuilder::for(User::class)
+        //     ->allowedFilters([array_keys($request->filter)[$i]])
+        //     ->get();
+        // }
         // dd($this->user);
-        $users = $this->user->where('name', 'Rowan Hand');
+        // $users = $this->user->where([]);
         return response()->json([
             'state' => true,
             'message' => __('general.success'),

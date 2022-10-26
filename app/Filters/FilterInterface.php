@@ -4,5 +4,7 @@ namespace App\Filters;
 
 interface FilterInterface
 {
-    public function where($column, $request);
+    public function filterByAll($request);
+
+    public function filterByExact($request);
 }
