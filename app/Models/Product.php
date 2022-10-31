@@ -9,9 +9,9 @@ class Product extends Model
 {
     use HasFactory;
 
-    public function category()
+    public function categories()
     {
-        return $this->belongsTo('App\Category', 'category_id');
+        return $this->morphMany(Category::class, 'categorytable');
     }
 
     // public function viewers()

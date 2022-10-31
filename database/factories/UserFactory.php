@@ -4,6 +4,8 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Hash;
+use App\Models\User;
 
 class UserFactory extends Factory
 {
@@ -14,12 +16,21 @@ class UserFactory extends Factory
      */
     public function definition()
     {
+        $names = [];
+        $users = User::pluck('secret_key')->toArray();
+        $names = array_merge($names, $users);
+    
         return [
-            'name' => $this->faker->name(),
-            'email' => $this->faker->unique()->safeEmail(),
+            'first_name' => $this->faker->firstName,
+            'last_name' => $this->faker->lastName,
+            'email' => time() . $this->faker->unique()->safeEmail,
+            'username' => Str::of($this->faker->userName)->replace('.', '')->kebab() . time(),
             'email_verified_at' => now(),
-            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+            'mobile' => '09' . $this->faker->numberBetween(100000000, 999999999),
+            'password' => Hash::make('12345678'),
             'remember_token' => Str::random(10),
+            'state' => 1,
+            'secret_key' => Str::kebab(makeWord($names)),    
         ];
     }
 
@@ -32,8 +43,21 @@ class UserFactory extends Factory
     {
         return $this->state(function (array $attributes) {
             return [
-                'email_verified_at' => null,
             ];
         });
+    }
+}
+
+if (!function_exists('makeWord'))
+{
+    function makeWord(&$names)
+    {
+        do
+        {
+            $faker = \Faker\Factory::create();
+            $name = $faker->unique()->words(3, true);
+        } while (in_array($name, $names));
+        $names[] = $name;
+        return $name;
     }
 }
