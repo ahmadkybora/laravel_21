@@ -3,7 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use App\Models\Category;
+use App\Models\ProductCategory;
 use App\Models\Brand;
 
 class ProductCategoryFactory extends Factory
@@ -17,7 +17,7 @@ class ProductCategoryFactory extends Factory
     {
         $titles = [];
         $brands = Brand::all()->toArray();
-        $categories = Category::pluck('title')->toArray();
+        $categories = ProductCategory::pluck('title')->toArray();
         $key = array_rand($brands);
         $titles = array_merge($titles, $categories);
     

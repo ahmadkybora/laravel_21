@@ -17,9 +17,6 @@ class CreateProductCategoriesTable extends Migration
             $table->id();
             $table->foreignId('brand_id');
             $table->string('title')->index();
-            $table->String('price');
-            $table->longText('description')->nullable();
-            $table->string('image')->nullable();
             $table->timestamps();
         });
     }

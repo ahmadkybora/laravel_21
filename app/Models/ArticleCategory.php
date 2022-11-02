@@ -8,4 +8,18 @@ use Illuminate\Database\Eloquent\Model;
 class ArticleCategory extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'title',
+    ];
+
+    protected $guarded = [
+        'id',
+        'user_id',
+    ];
+
+    public function author()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }

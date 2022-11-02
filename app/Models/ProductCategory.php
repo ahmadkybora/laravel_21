@@ -12,8 +12,12 @@ class ProductCategory extends Model
     protected $fillable = [
         'brand_id',
         'title',
-        'price',
         'description',
         'image'
     ];
+
+    public function brand()
+    {
+        return $this->belongsTo(Brand::class, 'brand_id');
+    }
 }

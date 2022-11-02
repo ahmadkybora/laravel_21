@@ -9,9 +9,17 @@ class Product extends Model
 {
     use HasFactory;
 
-    public function categories()
+    protected $fillable = [
+        'category_id',
+        'title',
+        'price',
+        'description',
+        'image'
+    ];
+
+    public function category()
     {
-        return $this->morphMany(Category::class, 'categorytable');
+        return $this->belongsTo(Category::class, 'category_id');
     }
 
     // public function viewers()
