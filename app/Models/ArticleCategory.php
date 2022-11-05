@@ -17,6 +17,11 @@ class ArticleCategory extends Model
         'id',
         'user_id',
     ];
+    
+    protected $casts = [
+        'created_at' => 'datetime:M/d/Y H:i:s',
+        'updated_at' => 'datetime:M/d/Y H:i:s',
+    ];
 
     public function author()
     {

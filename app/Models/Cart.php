@@ -9,8 +9,23 @@ class Cart extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'qty'
+    ];
+
+    protected $guarded = [
+        'id',
+        'product_id',
+        'user_id'
+    ];
+
+    protected $casts = [
+        'created_at' => 'datetime:M/d/Y H:i:s',
+        'updated_at' => 'datetime:M/d/Y H:i:s',
+    ];
+
     public function user()
     {
-        return $this->belongsTo("App\User", "user_id");
+        return $this->belongsTo(User::class, "user_id");
     }
 }

@@ -20,6 +20,11 @@ class Transaction extends Model
         'bank_id',
     ];
 
+    protected $casts = [
+        'created_at' => 'datetime:M/d/Y H:i:s',
+        'updated_at' => 'datetime:M/d/Y H:i:s',
+    ];
+    
     public function bank()
     {
         return $this->belongsTo(Bank::class, 'bank_id');

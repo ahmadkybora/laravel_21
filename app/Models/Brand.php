@@ -16,4 +16,9 @@ class Brand extends Model
     protected $guarded = [
         'id'
     ];
+
+    protected $casts = [
+        'created_at' => 'datetime:M/d/Y H:i:s',
+        'updated_at' => 'datetime:M/d/Y H:i:s',
+    ];
 }

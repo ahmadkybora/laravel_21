@@ -10,10 +10,19 @@ class ProductCategory extends Model
     use HasFactory;
 
     protected $fillable = [
-        'brand_id',
         'title',
         'description',
         'image'
+    ];
+
+    protected $guarded = [
+        'id',
+        'brand_id',
+    ];
+
+    protected $casts = [
+        'created_at' => 'datetime:M/d/Y H:i:s',
+        'updated_at' => 'datetime:M/d/Y H:i:s',
     ];
 
     public function brand()

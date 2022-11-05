@@ -10,11 +10,20 @@ class Product extends Model
     use HasFactory;
 
     protected $fillable = [
-        'category_id',
         'title',
         'price',
         'description',
         'image'
+    ];
+
+    protected $guarded = [
+        'id',
+        'category_id',
+    ];
+
+    protected $casts = [
+        'created_at' => 'datetime:M/d/Y H:i:s',
+        'updated_at' => 'datetime:M/d/Y H:i:s',
     ];
 
     public function category()
@@ -22,23 +31,30 @@ class Product extends Model
         return $this->belongsTo(Category::class, 'category_id');
     }
 
-    // public function viewers()
-    // {
-    //     return $this->morphToMany('App\User', 'viewers', 'viewers')
-    //         ->withPivot('ip')
-    //         ->withTimestamps();
-    // }
+    public function comments()
+    {
+        return $this->morphToMany(User::class, 'comments', 'comments')
+            ->withPivot('description', 'state')
+            ->withTimestamps();
+    }
 
-    // public function likes()
-    // {
-    //     return $this->morphToMany('App\User', 'likes', 'likes')
-    //         ->withPivot('state')
-    //         ->withTimestamps();
-    // }
+    public function viewers()
+    {
+        return $this->morphToMany(User::class, 'viewers', 'viewers')
+            ->withPivot('ip')
+            ->withTimestamps();
+    }
 
-    // public function favorites()
-    // {
-    //     return $this->morphToMany('App\User', 'favorites')
-    //         ->withTimestamps();
-    // }
+    public function likes()
+    {
+        return $this->morphToMany(User::class, 'likes', 'likes')
+            ->withPivot('state')
+            ->withTimestamps();
+    }
+
+    public function favorites()
+    {
+        return $this->morphToMany(User::class, 'favorites')
+            ->withTimestamps();
+    }
 }

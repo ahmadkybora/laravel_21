@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTicketsTable extends Migration
+class CreateTicketDetailsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,14 @@ class CreateTicketsTable extends Migration
      */
     public function up()
     {
-        Schema::create('tickets', function (Blueprint $table) {
+        Schema::create('ticket_details', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
             $table->longText('body');
-            $table->foreignId('user_id')->index()->nullable();
-            $table->enum('priority', ['HIGH', 'MEDIUM', 'LOW'])->default('LOW');
-            $table->foreignId('closer_id')->index()->nullable();
-            $table->enum('status', ['CLOSED', 'OPEN'])->default('OPEN');
+            $table->foreignId('from_id')->index()->nullable();
+            $table->foreignId('to_id')->index()->nullable();
+            $table->boolean('operator')->default(false);
+            $table->foreignId('parent_id')->index()->nullable();
+            $table->foreignId('ticket_id')->index()->nullable();
             $table->dateTime('seen_at')->nullable();
             $table->timestamps();
         });
@@ -33,6 +33,6 @@ class CreateTicketsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tickets');
+        Schema::dropIfExists('ticket_details');
     }
 }

@@ -9,8 +9,26 @@ class Wallet extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'credit',
+        'cash',
+        'state',
+    ];
+
+    protected $guarded = [
+        'id',
+        'owner_id',
+        'state_modifier_id',
+    ];
+
+    protected $casts = [
+        'created_at' => 'datetime:M/d/Y H:i:s',
+        'updated_at' => 'datetime:M/d/Y H:i:s',
+        'state_modified_at' => 'datetime:M/d/Y H:i:s',
+    ];
+
     public function user()
     {
-        return $this->belongsTo("App\User", "user_id");
+        return $this->belongsTo(User::class, "user_id");
     }
 }
