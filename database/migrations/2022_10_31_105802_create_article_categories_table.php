@@ -17,8 +17,6 @@ class CreateArticleCategoriesTable extends Migration
             $table->id();
             $table->foreignId('user_id');
             $table->string('title')->index();
-            $table->longText('description')->nullable();
-            $table->string('image')->nullable();
             $table->timestamps();
         });
     }

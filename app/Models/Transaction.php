@@ -27,11 +27,11 @@ class Transaction extends Model
     
     public function bank()
     {
-        return $this->belongsTo(Bank::class, 'bank_id');
+        return $this->belongsTo('App\Models\Bank', 'bank_id');
     }
 
     public function owner()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo('App\Models\User', 'user_id');
     }
 }

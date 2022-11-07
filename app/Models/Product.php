@@ -28,33 +28,33 @@ class Product extends Model
 
     public function category()
     {
-        return $this->belongsTo(Category::class, 'category_id');
+        return $this->belongsTo('App\Models\Category', 'category_id');
     }
 
     public function comments()
     {
-        return $this->morphToMany(User::class, 'comments', 'comments')
+        return $this->morphToMany('App\Models\User', 'comments', 'comments')
             ->withPivot('description', 'state')
             ->withTimestamps();
     }
 
     public function viewers()
     {
-        return $this->morphToMany(User::class, 'viewers', 'viewers')
+        return $this->morphToMany('App\Models\User', 'viewers', 'viewers')
             ->withPivot('ip')
             ->withTimestamps();
     }
 
     public function likes()
     {
-        return $this->morphToMany(User::class, 'likes', 'likes')
+        return $this->morphToMany('App\Models\User', 'likes', 'likes')
             ->withPivot('state')
             ->withTimestamps();
     }
 
     public function favorites()
     {
-        return $this->morphToMany(User::class, 'favorites')
+        return $this->morphToMany('App\Models\User', 'favorites')
             ->withTimestamps();
     }
 }

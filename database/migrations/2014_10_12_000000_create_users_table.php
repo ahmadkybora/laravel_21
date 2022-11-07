@@ -34,6 +34,26 @@ class CreateUsersTable extends Migration
             $table->rememberToken();
             $table->timestamps();
         });
+
+        $admin = new \App\Models\User();
+        $admin->first_name = "admin";
+        $admin->last_name = "admin";
+        $admin->email = "admin@yahoo.com";
+        $admin->username = "admin";
+        $admin->email_verified_at = now();
+        $admin->secret_key = rand(1,9);
+        $admin->password = Hash::make("12345678");
+        $admin->save();
+
+        $user = new \App\Models\User();
+        $user->first_name = "user";
+        $user->last_name = "user";
+        $user->email = "user@yahoo.com";
+        $user->username = "user";
+        $user->email_verified_at = now();
+        $user->secret_key = rand(1,8);
+        $user->password = Hash::make("12345678");
+        $user->save();
     }
 
     /**

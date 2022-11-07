@@ -16,31 +16,30 @@ class Ticket extends Model
         'status',
     ];
 
-    protected $guarded = [
-        'id',
-        'user_id',
-        'closer_id',
-    ];
-
     protected $casts = [
         'created_at' => 'datetime:M/d/Y H:i:s',
         'updated_at' => 'datetime:M/d/Y H:i:s',
         'seen_at' => 'datetime:M/d/Y H:i:s',
     ];
 
+    protected $guarded = [
+        'id',
+        'user_id',
+        'closer_id',
+    ];
+
     public function user()
     {
-        return $this->belongsTo(User::class, "user_id");
+        return $this->belongsTo('App\Models\User', 'user_id');
     }
 
     public function closer()
     {
-        return $this->belongsTo(User::class, 'closer_id');
+        return $this->belongsTo('App\Models\User', 'closer_id');
     }
 
     public function details()
     {
-        return $this->hasMany(TicketDetail::class, 'ticket_id');
+        return $this->hasMany('App\Models\TicketDetail', 'ticket_id');
     }
-
 }

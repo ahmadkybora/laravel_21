@@ -26,9 +26,14 @@ class Order extends Model
         'updated_at' => 'datetime:M/d/Y H:i:s',
     ];
 
+    public function user()
+    {
+        return $this->belongsTo('App\Models\User', 'user_id');
+    }
+
     public function transaction()
     {
-        return $this->belongsTo('App\UserTransaction', 'transaction_id');
+        return $this->belongsTo('App\Models\Transaction', 'transaction_id');
     }
 
 }
