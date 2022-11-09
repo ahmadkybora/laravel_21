@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 use Spatie\Permission\PermissionRegistrar;
+use Spatie\Permission\Models\Role;
 
 class CreatePermissionTables extends Migration
 {
@@ -114,13 +115,14 @@ class CreatePermissionTables extends Migration
             $table->primary([PermissionRegistrar::$pivotPermission, PermissionRegistrar::$pivotRole], 'role_has_permissions_permission_id_role_id_primary');
         });
 
-        $role = new \Spatie\Permission\Models\Role();
-        $role->name = 'super-admin';
+        $role = new Role();
+        $role->name = "super-admin";
         $role->guard_name = "api";
         $role->save();
 
         $user = \App\Models\User::find(1);
-        $user->assignRole('super-admin');
+        $role = Role::where('name', 'super-admin')->first();
+        $user->assignRole($role);
 
         app('cache')
             ->store(config('permission.cache.store') != 'default' ? config('permission.cache.store') : null)
