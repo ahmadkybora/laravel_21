@@ -1,13 +1,22 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Panel;
 
-use App\Http\Requests\StoreBankRequest;
-use App\Http\Requests\UpdateBankRequest;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\BankRequest;
+use App\Repositories\Repository;
 use App\Models\Bank;
 
 class BankController extends Controller
 {
+    protected $bank;
+    protected $filter;
+    public function __construct(Bank $bank)
+    {
+        $this->bank = new Repository($bank);
+        // $this->filter = new Filter($user);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -15,7 +24,11 @@ class BankController extends Controller
      */
     public function index()
     {
-        //
+        return response()->json([
+            'state' => true,
+            'message' => __('general.success'),
+            'data' => $this->bank->all(),
+        ], 200);
     }
 
     /**
@@ -31,10 +44,10 @@ class BankController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreBankRequest  $request
+     * @param  \App\Http\Requests\BankRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreBankRequest $request)
+    public function store(BankRequest $request)
     {
         //
     }
@@ -64,11 +77,11 @@ class BankController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateBankRequest  $request
+     * @param  \App\Http\Requests\BankRequest  $request
      * @param  \App\Models\Bank  $bank
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateBankRequest $request, Bank $bank)
+    public function update(BankRequest $request, Bank $bank)
     {
         //
     }

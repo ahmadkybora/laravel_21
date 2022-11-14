@@ -1,13 +1,21 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Panel;
 
-use App\Http\Requests\StoreTransactionRequest;
-use App\Http\Requests\UpdateTransactionRequest;
+use App\Http\Requests\TransactionRequest;
+use App\Repositories\Repository;
 use App\Models\Transaction;
 
 class TransactionController extends Controller
 {
+    protected $transaction;
+    protected $filter;
+    public function __construct(Transaction $transaction)
+    {
+        $this->transaction = new Repository($transaction);
+        // $this->filter = new Filter($user);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -15,7 +23,11 @@ class TransactionController extends Controller
      */
     public function index()
     {
-        //
+        return response()->json([
+            'state' => true,
+            'message' => __('general.success'),
+            'data' => $this->transaction->all(),
+        ], 200);
     }
 
     /**
@@ -31,10 +43,10 @@ class TransactionController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreTransactionRequest  $request
+     * @param  \App\Http\Requests\TransactionRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreTransactionRequest $request)
+    public function store(TransactionRequest $request)
     {
         //
     }
@@ -64,11 +76,11 @@ class TransactionController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateTransactionRequest  $request
+     * @param  \App\Http\Requests\TransactionRequest  $request
      * @param  \App\Models\Transaction  $transaction
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateTransactionRequest $request, Transaction $transaction)
+    public function update(TransactionRequest $request, Transaction $transaction)
     {
         //
     }

@@ -3,17 +3,17 @@
 namespace App\Http\Controllers\Panel;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\ProductRequest;
+use App\Http\Requests\ArticleCategoryRequest;
 use App\Repositories\Repository;
-use App\Models\Product;
+use App\Models\ArticleCategory;
 
-class ProductController extends Controller
+class ArticleCategoryController extends Controller
 {
-    protected $product;
+    protected $category;
     protected $filter;
-    public function __construct(Product $product)
+    public function __construct(ArticleCategory $category)
     {
-        $this->product = new Repository($product);
+        $this->category = new Repository($category);
         // $this->filter = new Filter($user);
     }
 
@@ -27,7 +27,7 @@ class ProductController extends Controller
         return response()->json([
             'state' => true,
             'message' => __('general.success'),
-            'data' => $this->product->all(),
+            'data' => $this->category->all(),
         ], 200);
     }
 
@@ -44,10 +44,10 @@ class ProductController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\ProductRequest  $request
+     * @param  \App\Http\Requests\ArticleCategoryRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(ProductRequest $request)
+    public function store(ArticleCategoryRequest $request)
     {
         //
     }
@@ -55,10 +55,10 @@ class ProductController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Product  $product
+     * @param  \App\Models\ArticleCategory  $article
      * @return \Illuminate\Http\Response
      */
-    public function show(Product $product)
+    public function show(ArticleCategory $category)
     {
         //
     }
@@ -66,10 +66,10 @@ class ProductController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Product  $product
+     * @param  \App\Models\ArticleCategory  $article
      * @return \Illuminate\Http\Response
      */
-    public function edit(Product $product)
+    public function edit(ArticleCategory $category)
     {
         //
     }
@@ -77,11 +77,11 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\ProductRequest  $request
-     * @param  \App\Models\Product  $product
+     * @param  \App\Http\Requests\ArticleCategoryRequest  $request
+     * @param  \App\Models\ArticleCategory  $article
      * @return \Illuminate\Http\Response
      */
-    public function update(ProductRequest $request, Product $product)
+    public function update(ArticleCategoryRequest $request, ArticleCategory $category)
     {
         //
     }
@@ -89,10 +89,10 @@ class ProductController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Product  $product
+     * @param  \App\Models\ArticleCategory  $article
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Product $product)
+    public function destroy(ArticleCategory $article)
     {
         //
     }

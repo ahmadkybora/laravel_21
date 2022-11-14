@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Panel\UserController;
+// use App\Http\Controllers\Panel\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,11 +20,36 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::middleware('policy')->namespace('Panel')->group(function () {
+// Route::middleware('policy')->group(function () {
     Route::prefix('panel')->group(function () {
-        Route::get('users', [UserController::class, 'index'])->name('user-index');
+        Route::namespace('Panel')->group(function () {
+            Route::resource('users', 'UserController')->names([
+                'index' => 'user-index'
+            ]);
+            Route::resource('article-categories', 'ArticleCategoryController')->names([
+                'index' => 'article-category-index'
+            ]);
+            Route::resource('articles', 'ArticleController')->names([
+                'index' => 'article-index'
+            ]);
+            Route::resource('product-categories', 'ProductCategoryController')->names([
+                'index' => 'product-category-index'
+            ]);
+            Route::resource('products', 'ProductController')->names([
+                'index' => 'product-index'
+            ]);
+            Route::resource('banks', 'BankController')->names([
+                'index' => 'bank-index'
+            ]);
+            Route::resource('brands', 'BrandController')->names([
+                'index' => 'brand-index'
+            ]);
+            Route::resource('transactions', 'TransactionController')->names([
+                'index' => 'transaction-index'
+            ]);
+        });
     });
-});
+// });
 /*
  * Authentication Routes.
  */

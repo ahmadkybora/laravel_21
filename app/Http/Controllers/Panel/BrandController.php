@@ -1,13 +1,22 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Panel;
 
-use App\Http\Requests\StoreBrandRequest;
-use App\Http\Requests\UpdateBrandRequest;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\BrandRequest;
+use App\Repositories\Repository;
 use App\Models\Brand;
 
 class BrandController extends Controller
 {
+    protected $brand;
+    protected $filter;
+    public function __construct(Brand $brand)
+    {
+        $this->brand = new Repository($brand);
+        // $this->filter = new Filter($user);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -15,7 +24,11 @@ class BrandController extends Controller
      */
     public function index()
     {
-        //
+        return response()->json([
+            'state' => true,
+            'message' => __('general.success'),
+            'data' => $this->brand->all(),
+        ], 200);
     }
 
     /**

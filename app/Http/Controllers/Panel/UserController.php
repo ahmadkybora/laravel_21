@@ -17,12 +17,17 @@ class UserController extends Controller
     public function __construct(User $user)
     {
         $this->user = new Repository($user);
-        $this->filter = new Filter($user);
+        // $this->filter = new Filter($user);
     }
 
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index(Request $request)
     {
-        $users = $this->filter->filterByAll($request);
+        // $users = $this->filter->filterByAll($request);
         // dd(count(array_keys($request->filter)));
         // for($i = 0; $i < count(array_keys($request->filter)); $i++) {
         //     // dd($i);
@@ -35,7 +40,7 @@ class UserController extends Controller
         return response()->json([
             'state' => true,
             'message' => __('general.success'),
-            'data' => $users,
+            'data' => $this->user->all(),
         ], 200);
     }
 

@@ -1,13 +1,22 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Panel;
 
-use App\Http\Requests\StoreArticleRequest;
-use App\Http\Requests\UpdateArticleRequest;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\ArticleRequest;
+use App\Repositories\Repository;
 use App\Models\Article;
 
 class ArticleController extends Controller
 {
+    protected $article;
+    protected $filter;
+    public function __construct(Article $article)
+    {
+        $this->article = new Repository($article);
+        // $this->filter = new Filter($user);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -15,7 +24,11 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        //
+        return response()->json([
+            'state' => true,
+            'message' => __('general.success'),
+            'data' => $this->article->all(),
+        ], 200);
     }
 
     /**
@@ -31,10 +44,10 @@ class ArticleController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreArticleRequest  $request
+     * @param  \App\Http\Requests\ArticleRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreArticleRequest $request)
+    public function store(ArticleRequest $request)
     {
         //
     }
@@ -64,11 +77,11 @@ class ArticleController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateArticleRequest  $request
+     * @param  \App\Http\Requests\ArticleRequest  $request
      * @param  \App\Models\Article  $article
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateArticleRequest $request, Article $article)
+    public function update(ArticleRequest $request, Article $article)
     {
         //
     }
