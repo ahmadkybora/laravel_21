@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Panel;
 
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ArticleRequest;
 use App\Repositories\Repository;
@@ -22,7 +23,7 @@ class ArticleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         return response()->json([
             'state' => true,
@@ -94,6 +95,11 @@ class ArticleController extends Controller
      */
     public function destroy(Article $article)
     {
-        //
+        if($article->delete())
+            return response()->json([
+                'state' => true,
+                'message' => __('general.success'),
+                'data' => '',
+            ], 200);
     }
 }

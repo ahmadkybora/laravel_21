@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Panel;
 
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductCategoryRequest;
 use App\Repositories\Repository;
@@ -9,11 +10,11 @@ use App\Models\ProductCategory;
 
 class ProductCategoryController extends Controller
 {
-    protected $category;
+    protected $product_category;
     protected $filter;
-    public function __construct(ProductCategory $category)
+    public function __construct(ProductCategory $product_category)
     {
-        $this->category = new Repository($category);
+        $this->product_category = new Repository($product_category);
         // $this->filter = new Filter($user);
     }
 
@@ -22,12 +23,12 @@ class ProductCategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         return response()->json([
             'state' => true,
             'message' => __('general.success'),
-            'data' => $this->category->all(),
+            'data' => $this->product_category->all(),
         ], 200);
     }
 
@@ -58,7 +59,7 @@ class ProductCategoryController extends Controller
      * @param  \App\Models\ProductCategory  $article
      * @return \Illuminate\Http\Response
      */
-    public function show(ProductCategory $category)
+    public function show(ProductCategory $product_category)
     {
         //
     }
@@ -69,7 +70,7 @@ class ProductCategoryController extends Controller
      * @param  \App\Models\ProductCategory  $article
      * @return \Illuminate\Http\Response
      */
-    public function edit(ProductCategory $category)
+    public function edit(ProductCategory $product_category)
     {
         //
     }
@@ -81,7 +82,7 @@ class ProductCategoryController extends Controller
      * @param  \App\Models\ProductCategory  $article
      * @return \Illuminate\Http\Response
      */
-    public function update(ProductCategoryRequest $request, ProductCategory $category)
+    public function update(ProductCategoryRequest $request, ProductCategory $product_category)
     {
         //
     }
@@ -92,8 +93,13 @@ class ProductCategoryController extends Controller
      * @param  \App\Models\ProductCategory  $article
      * @return \Illuminate\Http\Response
      */
-    public function destroy(ProductCategory $category)
+    public function destroy(ProductCategory $product_category)
     {
-        //
+        if($product_category->delete())
+            return response()->json([
+                'state' => true,
+                'message' => __('general.success'),
+                'data' => '',
+            ], 200);
     }
 }

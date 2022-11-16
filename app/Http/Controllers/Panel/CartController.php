@@ -1,21 +1,35 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Panel;
 
-use App\Http\Requests\StoreCartRequest;
-use App\Http\Requests\UpdateCartRequest;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\CartRequest;
+use App\Repositories\Repository;
 use App\Models\Cart;
 
 class CartController extends Controller
 {
+    protected $cart;
+    protected $filter;
+    public function __construct(Cart $cart)
+    {
+        $this->cart = new Repository($cart);
+        // $this->filter = new Filter($user);
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        return response()->json([
+            'state' => true,
+            'message' => __('general.success'),
+            'data' => $this->cart->all(),
+        ], 200);
     }
 
     /**
@@ -31,10 +45,10 @@ class CartController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreCartRequest  $request
+     * @param  \App\Http\Requests\CartRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreCartRequest $request)
+    public function store(CartRequest $request)
     {
         //
     }
@@ -64,11 +78,11 @@ class CartController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateCartRequest  $request
+     * @param  \App\Http\Requests\CartRequest  $request
      * @param  \App\Models\Cart  $cart
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateCartRequest $request, Cart $cart)
+    public function update(CartRequest $request, Cart $cart)
     {
         //
     }
@@ -81,6 +95,11 @@ class CartController extends Controller
      */
     public function destroy(Cart $cart)
     {
-        //
+        if($cart->delete())
+            return response()->json([
+                'state' => true,
+                'message' => __('general.success'),
+                'data' => '',
+            ], 200);
     }
 }

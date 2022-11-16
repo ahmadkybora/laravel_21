@@ -1,21 +1,35 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Panel;
 
-use App\Http\Requests\StoreOrderRequest;
-use App\Http\Requests\UpdateOrderRequest;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\OrderRequest;
+use App\Repositories\Repository;
 use App\Models\Order;
 
 class OrderController extends Controller
 {
+    protected $order;
+    protected $filter;
+    public function __construct(Order $order)
+    {
+        $this->order = new Repository($order);
+        // $this->filter = new Filter($user);
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        return response()->json([
+            'state' => true,
+            'message' => __('general.success'),
+            'data' => $this->order->all(),
+        ], 200);
     }
 
     /**
@@ -31,10 +45,10 @@ class OrderController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreOrderRequest  $request
+     * @param  \App\Http\Requests\OrderRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreOrderRequest $request)
+    public function store(OrderRequest $request)
     {
         //
     }
@@ -64,11 +78,11 @@ class OrderController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateOrderRequest  $request
+     * @param  \App\Http\Requests\OrderRequest  $request
      * @param  \App\Models\Order  $order
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateOrderRequest $request, Order $order)
+    public function update(OrderRequest $request, Order $order)
     {
         //
     }
@@ -81,6 +95,11 @@ class OrderController extends Controller
      */
     public function destroy(Order $order)
     {
-        //
+        if($order->delete())
+            return response()->json([
+                'state' => true,
+                'message' => __('general.success'),
+                'data' => '',
+            ], 200);
     }
 }

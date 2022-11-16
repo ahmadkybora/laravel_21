@@ -17,12 +17,12 @@ class UserController extends Controller
     public function __construct(User $user)
     {
         $this->user = new Repository($user);
-        // $this->filter = new Filter($user);
+        // $this->filter = new Filter($filter);
     }
 
     /**
      * Display a listing of the resource.
-     *
+     *  
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
@@ -49,4 +49,5 @@ class UserController extends Controller
         // هر چیزی داخل filable مدل هس رو ذخیره کن
         return $this->user->create($request->only($this->user->getModel()->fillable));
     }
+    
 }

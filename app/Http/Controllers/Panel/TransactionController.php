@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Panel;
 
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\TransactionRequest;
 use App\Repositories\Repository;
 use App\Models\Transaction;
@@ -21,7 +23,7 @@ class TransactionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         return response()->json([
             'state' => true,
@@ -93,6 +95,11 @@ class TransactionController extends Controller
      */
     public function destroy(Transaction $transaction)
     {
-        //
+        if($transaction->delete())
+            return response()->json([
+                'state' => true,
+                'message' => __('general.success'),
+                'data' => '',
+            ], 200);
     }
 }

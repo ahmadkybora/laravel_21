@@ -1,21 +1,35 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Panel;
 
-use App\Http\Requests\StoreWalletRequest;
-use App\Http\Requests\UpdateWalletRequest;
+use Illuminate\Http\Request;
+use App\Http\Requests\WalletRequest;
+use App\Http\Controllers\Controller;
+use App\Repositories\Repository;
 use App\Models\Wallet;
 
 class WalletController extends Controller
 {
+    protected $wallet;
+    protected $filter;
+    public function __construct(Wallet $wallet)
+    {
+        $this->wallet = new Repository($wallet);
+        // $this->filter = new Filter($filter);
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        return response()->json([
+            'state' => true,
+            'message' => __('general.success'),
+            'data' => $this->user->all(),
+        ], 200);
     }
 
     /**

@@ -16,4 +16,5 @@ return [
     'accessDenied' => 'access denied',
     'success' => 'Success',
     'againLater' => 'please try again later',
+    'notFound' => 'not found!'
 ];

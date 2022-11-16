@@ -16,4 +16,5 @@ return [
     'access denied' => 'دسترسی ممنوع شد',
     'success' => 'موفقیت',
     'againLater' => 'لطفا بعدا دوباره امتحان کنید',
+    'notFound' => 'پیدا نشد!'
 ];

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Panel;
 
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ArticleCategoryRequest;
 use App\Repositories\Repository;
@@ -9,11 +10,11 @@ use App\Models\ArticleCategory;
 
 class ArticleCategoryController extends Controller
 {
-    protected $category;
+    protected $article_category;
     protected $filter;
-    public function __construct(ArticleCategory $category)
+    public function __construct(ArticleCategory $article_category)
     {
-        $this->category = new Repository($category);
+        $this->article_category = new Repository($article_category);
         // $this->filter = new Filter($user);
     }
 
@@ -22,12 +23,12 @@ class ArticleCategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         return response()->json([
             'state' => true,
             'message' => __('general.success'),
-            'data' => $this->category->all(),
+            'data' => $this->article_category->all(),
         ], 200);
     }
 
@@ -49,7 +50,17 @@ class ArticleCategoryController extends Controller
      */
     public function store(ArticleCategoryRequest $request)
     {
-        //
+        // $this->article_category->create($request->only($this->article_category->getModel()));
+
+        $article_category = new ArticleCategory();
+        $article_category->title = $request->input('title');
+        $article_category->author()->associate(1);
+        if($article_category->save())
+            return response()->json([
+                'state' => true,
+                'message' => __('general.success'),
+                'data' => '',
+            ], 200);
     }
 
     /**
@@ -58,7 +69,7 @@ class ArticleCategoryController extends Controller
      * @param  \App\Models\ArticleCategory  $article
      * @return \Illuminate\Http\Response
      */
-    public function show(ArticleCategory $category)
+    public function show(ArticleCategory $article_category)
     {
         //
     }
@@ -69,7 +80,7 @@ class ArticleCategoryController extends Controller
      * @param  \App\Models\ArticleCategory  $article
      * @return \Illuminate\Http\Response
      */
-    public function edit(ArticleCategory $category)
+    public function edit(ArticleCategory $article_category)
     {
         //
     }
@@ -81,9 +92,16 @@ class ArticleCategoryController extends Controller
      * @param  \App\Models\ArticleCategory  $article
      * @return \Illuminate\Http\Response
      */
-    public function update(ArticleCategoryRequest $request, ArticleCategory $category)
+    public function update(ArticleCategoryRequest $request, ArticleCategory $article_category)
     {
-        //
+        $article_category->title = $request->input('title');
+        $article_category->author()->associate(1);
+        if($article_category->save())
+            return response()->json([
+                'state' => true,
+                'message' => __('general.success'),
+                'data' => '',
+            ], 200);
     }
 
     /**
@@ -92,8 +110,15 @@ class ArticleCategoryController extends Controller
      * @param  \App\Models\ArticleCategory  $article
      * @return \Illuminate\Http\Response
      */
-    public function destroy(ArticleCategory $article)
+    public function destroy(ArticleCategory $article_category)
     {
-        //
+        // dd($article_category->id);
+        // if($this->article_category->delete($article_category->id))
+        if($article_category->delete())
+            return response()->json([
+                'state' => true,
+                'message' => __('general.success'),
+                'data' => '',
+            ], 200);
     }
 }

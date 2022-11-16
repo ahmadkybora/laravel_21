@@ -4,6 +4,8 @@ namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use App\Exceptions\InvalidOrderException;
 
 class Handler extends ExceptionHandler
 {
@@ -13,7 +15,7 @@ class Handler extends ExceptionHandler
      * @var array<int, class-string<Throwable>>
      */
     protected $dontReport = [
-        //
+        InvalidOrderException::class
     ];
 
     /**
@@ -36,6 +38,24 @@ class Handler extends ExceptionHandler
     {
         $this->reportable(function (Throwable $e) {
             //
+        });
+
+        $this->renderable(function (InvalidOrderException $e, $request) {
+            return response()->json([
+                'state' => true,
+                'message' => __('general.notFound'),
+                'data' => '',
+            ], 500);
+        });
+
+        $this->renderable(function (NotFoundHttpException $e, $request) {
+            if ($request->is('api/*')) {
+                return response()->json([
+                    'state' => true,
+                    'message' => __('general.notFound'),
+                    'data' => '',
+                ], 404);
+            }
         });
     }
 }
