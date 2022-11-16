@@ -46,7 +46,7 @@ class UserController extends Controller
         return response()->json([
             'state' => true,
             'message' => __('general.success'),
-            'data' => User::all('first_name', 'last_name', 'username', 'email')
+            'data' => User::all('id', 'first_name', 'last_name', 'username', 'email')
         ], 200);
     }
 
