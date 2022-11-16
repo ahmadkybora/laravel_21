@@ -37,10 +37,16 @@ class UserController extends Controller
         // }
         // dd($this->user);
         // $users = $this->user->where([]);
+        // return response()->json([
+        //     'state' => true,
+        //     'message' => __('general.success'),
+        //     'data' => $this->user->all(),
+        // ], 200);
+
         return response()->json([
             'state' => true,
             'message' => __('general.success'),
-            'data' => $this->user->all(),
+            'data' => User::all('first_name', 'last_name', 'username', 'email')
         ], 200);
     }
 
