@@ -24,15 +24,30 @@ class Filter
     public function filterByAll($request)
     {
         $getKeys = array_keys($request->query('filter'));
-        dd($getKeys);
-        for($i = 0; $i < count($getKeys); $i++) {
-            $b = [];
-            $b[$i] = $getKeys[$i];
+        // $b = [];
+        // foreach(array_keys($request->query('filter')) as $key => $index) {
+        //     $b[$key] = $index;
+        // }
+        // dd(array_values($b));
+        // $b = [];
+        // $b = array_merge($b, array_values($getKeys));
+        // dd($b);
+        // for($i = 0; $i < count($getKeys); $i++) {
+        //     $b = [];
+        //     $b[$i] = $getKeys[$i];
+        // }
+        // dd($b);
+        function a($getKeys) {
+            for($i = 0; $i < count($getKeys); $i++) {
+                dd($getKeys);
+                $b = [];
+                $b[$i] = $getKeys[$i];
+            }
         }
-        dd($b);
-            $this->filters[$i] = QueryBuilder::for($this->table)
-                ->allowedFilters([$getKeys])
-                ->paginate($request->query('paginate'));
+
+        $this->filters = QueryBuilder::for($this->table)
+            ->allowedFilters([a($getKeys)])
+            ->paginate($request->query('paginate'));
             // dd($this->filters);
 
         return $this->filters;
