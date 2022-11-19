@@ -5,36 +5,58 @@ use Illuminate\Database\Eloquent\Model;
 use Spatie\QueryBuilder\QueryBuilder;
 use Spatie\QueryBuilder\AllowedFilter;
 
-class Filter implements FilterInterface
+class Filter
 {
-    protected $filter;
-
-    public function __construct(Model $model)
+    protected $table;
+    protected $filters = [];
+    public function __construct($model)
     {
-        $this->filter = $model;
+        $this->table = $model;
+        // dd($this->table);
     }
+
+    // public static function getTable($table)
+    // {
+    //     $this->table = $table;
+    //     return $this;
+    // }
 
     public function filterByAll($request)
     {
-        $filter = [];
-        $getKeys = array_keys($request->filter);
+        $getKeys = array_keys($request->query('filter'));
+        dd($getKeys);
         for($i = 0; $i < count($getKeys); $i++) {
-            $filter = QueryBuilder::for($this->filter)
-                ->allowedFilters([$getKeys[$i]])
-                ->get();
+            $b = [];
+            $b[$i] = $getKeys[$i];
         }
-        return $filter;
+        dd($b);
+            $this->filters[$i] = QueryBuilder::for($this->table)
+                ->allowedFilters([$getKeys])
+                ->paginate($request->query('paginate'));
+            // dd($this->filters);
+
+        return $this->filters;
     }
 
     public function filterByExact($request)
     {
-        $filter = [];
-        $getKeys = array_keys($request->filter);
+        $getKeys = array_keys($request->query('filter'));
         for($i = 0; $i < count($getKeys); $i++) {
-            $filter = QueryBuilder::for($this->filter)
+            $this->filters = QueryBuilder::for($table)
                 ->allowedFilters([AllowedFilter::exact($getKeys[$i])])
-                ->get();
+                ->paginate($request->query('paginate'));
         }
-        return $filter;
+        return $this->filters;
+    }
+
+    public function filterBySortId($request)
+    {
+        // return QueryBuilder::for($this->table)->allowedSorts('id')->paginate(10);
+        // dd($b);
+        $this->filters = QueryBuilder::for($this->table)
+            ->allowedSorts('id')
+            ->paginate($request->query('paginate'));
+            // ->get();
+        return $this->filters;
     }
 }

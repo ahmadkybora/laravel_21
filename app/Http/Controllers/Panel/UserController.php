@@ -13,11 +13,15 @@ use Spatie\QueryBuilder\QueryBuilder;
 class UserController extends Controller
 {
     protected $user;
+    protected $users = [];
     protected $filter;
+    
     public function __construct(User $user)
     {
+        // $f = new Filter();
+        // dd($f);
         $this->user = new Repository($user);
-        // $this->filter = new Filter($filter);
+        $this->filter = new Filter(User::class);
     }
 
     /**
@@ -42,18 +46,103 @@ class UserController extends Controller
         //     'message' => __('general.success'),
         //     'data' => $this->user->all(),
         // ], 200);
+        // dd($request->query('paginate'));
+        // $users = $this->filter->filterByAll($request);
+        // return $users;
+        // $users = [];
 
-        return response()->json([
-            'state' => true,
-            'message' => __('general.success'),
-            'data' => User::all('id', 'first_name', 'last_name', 'username', 'email')
-        ], 200);
+        //         if($request->query('sort'))
+        // dd(array_keys($request->query('filter'))[0]);
+        // if($request->query('sort'))
+        //     $users = QueryBuilder::for(User::class)
+        //         // ->allowedFilters(array_keys($request->query('filter'))[0])
+        //         ->allowedSorts('id')
+        //         ->get();
+
+            // $users = (new Search())
+            //     ->registerModel(User::class, 'name')
+            //     ->search('john');
+
+            // $users = User::where('username', 'LIKE', '%' . $request->query('search') . '%')
+            //     ->select('id', 'first_name', 'last_name', 'username', 'email')
+            //     ->latest()
+            //     ->paginate(10);
+
+        if($request->query('filter'))
+            $this->users = $this->filter->filterByAll($request);
+
+        if($request->query('sort'))
+            $this->users = $this->filter->filterBySortId($request);
+
+        if($request->query('all'))
+            $this->users = $this->user->all();
+
+        if($request->query('allAndPaginate'))
+            $this->users = User::select('id', 'first_name', 'last_name', 'username', 'email')
+                ->paginate($request->query('allAndPaginate'));
+
+        if($this->users)
+            return response()->json([
+                'state' => true,
+                'message' => __('general.success'),
+                'data' => $this->users
+            ], 200);
     }
 
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \App\Http\Requests\UserRequest  $request
+     * @return \Illuminate\Http\Response
+     */
     public function store(UserRequest $request)
     {
         // هر چیزی داخل filable مدل هس رو ذخیره کن
         return $this->user->create($request->only($this->user->getModel()->fillable));
     }
     
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Models\User  $wallet
+     * @return \Illuminate\Http\Response
+     */
+    public function show(User $user)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\Models\User  $wallet
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(User $user)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \App\Http\Requests\UserRequest  $request
+     * @param  \App\Models\User  $wallet
+     * @return \Illuminate\Http\Response
+     */
+    public function update(UserRequest $request, User $user)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Models\User  $wallet
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(User $user)
+    {
+        //
+    }
 }
