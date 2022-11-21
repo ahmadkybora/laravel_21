@@ -21,9 +21,39 @@ class Filter
     //     return $this;
     // }
 
-    public function filterByAll($request)
+    public function filterByOneColumn($request)
     {
-        $getKeys = array_keys($request->query('filter'));
+        return $this->filters = QueryBuilder::for($this->table)
+            ->allowedFilters([array_keys($request->query('filter'))[0]])
+            ->paginate($request->query('paginate'));
+    }
+
+    public function filterByRelationship($request)
+    {
+
+        return $this->filters = QueryBuilder::for($this->table)
+            ->allowedIncludes('posts')
+            ->get();
+    }
+
+    public function filterBySort($request)
+    {
+        return $this->filters = QueryBuilder::for($this->table)
+            ->allowedSorts($request->query('sort'))
+            ->paginate($request->query('paginate'));
+    }
+
+    public function filterByMultiColumn($request)
+    {
+        // $getKeys = array_keys($request->query('fields'));
+        // dd($request->query('fields'));
+        // foreach($getKeys as $key => $index) {
+            $this->filters = QueryBuilder::for($this->table)
+                ->allowedFields([$request->query('fields')])
+                ->get();
+        // }
+            // ->paginate($request->query('paginate'));
+    }
         // $b = [];
         // foreach(array_keys($request->query('filter')) as $key => $index) {
         //     $b[$key] = $index;
@@ -37,21 +67,20 @@ class Filter
         //     $b[$i] = $getKeys[$i];
         // }
         // dd($b);
-        function a($getKeys) {
-            for($i = 0; $i < count($getKeys); $i++) {
-                dd($getKeys);
-                $b = [];
-                $b[$i] = $getKeys[$i];
-            }
-        }
+        // dd($getKeys);
 
-        $this->filters = QueryBuilder::for($this->table)
-            ->allowedFilters([a($getKeys)])
-            ->paginate($request->query('paginate'));
-            // dd($this->filters);
-
-        return $this->filters;
-    }
+        // dd(array_key_exists($index, $getKeys));
+        // dd($c($getKeys));
+        // function a($getKeys) {
+        //     for($i = 0; $i < count($getKeys); $i++) {
+        //         $b[$i] = $getKeys[$i];
+        //     }
+        // }
+        // // dd($getKeys);
+        // implode(" ",$getKeys);
+        // $c = fn($getKeys) => $getKeys[0];
+        // $getKeys = array_keys($request->query('filter'));
+        // dd($request->query('filter'));
 
     public function filterByExact($request)
     {
@@ -64,14 +93,4 @@ class Filter
         return $this->filters;
     }
 
-    public function filterBySortId($request)
-    {
-        // return QueryBuilder::for($this->table)->allowedSorts('id')->paginate(10);
-        // dd($b);
-        $this->filters = QueryBuilder::for($this->table)
-            ->allowedSorts('id')
-            ->paginate($request->query('paginate'));
-            // ->get();
-        return $this->filters;
-    }
 }
