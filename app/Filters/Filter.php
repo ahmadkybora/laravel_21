@@ -37,6 +37,9 @@ class Filter
             ->paginate($request->query('paginate'));
     }
 
+    /**
+     * has been tested
+     */
     public function filterBySort($request)
     {
         return $this->filters = QueryBuilder::for($this->table)
