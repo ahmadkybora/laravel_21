@@ -27,4 +27,9 @@ class ArticleCategory extends Model
     {
         return $this->belongsTo('App\Models\User', 'user_id');
     }
+
+    public function articles()
+    {
+        return $this->hasMany('App\Models\Article', 'category_id');
+    }
 }

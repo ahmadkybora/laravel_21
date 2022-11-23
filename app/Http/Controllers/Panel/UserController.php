@@ -74,11 +74,11 @@ class UserController extends Controller
         if($request->query('include'))
             $this->users = $this->filter->filterByRelationship($request);
 
-        if($request->query('fields'))
-            $this->users = $this->filter->filterByMultiColumn($request);
-
         if($request->query('sort'))
             $this->users = $this->filter->filterBySort($request);
+
+        if($request->query('fields'))
+            $this->users = $this->filter->filterByMultiColumn($request);
 
         if($request->query('all'))
             $this->users = $this->user->all();

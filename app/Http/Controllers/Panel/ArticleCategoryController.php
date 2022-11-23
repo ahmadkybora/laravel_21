@@ -7,14 +7,17 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ArticleCategoryRequest;
 use App\Repositories\Repository;
 use App\Models\ArticleCategory;
+use App\Filters\Filter;
 
 class ArticleCategoryController extends Controller
 {
     protected $article_category;
+    protected $article_categories = [];
     protected $filter;
     public function __construct(ArticleCategory $article_category)
     {
         $this->article_category = new Repository($article_category);
+        $this->filter = new Filter(ArticleCategory::class);
         // $this->filter = new Filter($user);
     }
 
@@ -25,10 +28,16 @@ class ArticleCategoryController extends Controller
      */
     public function index(Request $request)
     {
+        if($request->query('include'))
+            $this->article_categories = $this->filter->filterByRelationship($request);
+
+        if($request->query('fields'))
+            $this->article_categories = $this->filter->filterByMultiColumn($request);
+
         return response()->json([
             'state' => true,
             'message' => __('general.success'),
-            'data' => $this->article_category->all(),
+            'data' => $this->article_categories,
         ], 200);
     }
 
