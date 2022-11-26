@@ -14,22 +14,23 @@ class Filter
         $this->table = $model;
     }
 
-
-
+    /**
+     * //example GET /users?filter[name]=seb,freek
+     * please without space
+     * has been tested
+     */
     public function filterByOneColumn($request)
     {
-        $getKey = array_keys($request->query('filter'));
-        if(count($request->query('filter')) === 1)
-            return $this->filters = QueryBuilder::for($this->table)
-                ->allowedFilters([$getKey[0]])
-                ->paginate($request->query('paginate'));
-                
-        if(count($request->query('filter')) === 2)
-            return $this->filters = QueryBuilder::for($this->table)
-                ->allowedFilters([$getKey[0], $getKey[1]])
-                ->paginate($request->query('paginate'));
+        return $this->filters = QueryBuilder::for($this->table)
+            ->allowedFilters([array_keys($request->query('filter'))[0]])
+            ->paginate($request->query('paginate'));
     }
 
+    /**
+     * //example GET /users?include=posts,permissions
+     * but cant multi fields send
+     * issue
+     */
     public function filterByRelationship($request)
     {
         return $this->filters = QueryBuilder::for($this->table)
@@ -38,24 +39,24 @@ class Filter
     }
 
     /**
-     * has been tested
+     * //example GET /users?sort=name,-street
+     * but cant multi fields send
+     * issue
      */
     public function filterBySort($request)
     {
         return $this->filters = QueryBuilder::for($this->table)
-            ->allowedSorts($request->query('sort'))
+            ->allowedSorts([$request->query('sort')])
             ->paginate($request->query('paginate'));
     }
 
-    /**
-     * just 2 fields
-     */
     public function filterByMultiColumn($request)
     {
-        $getKeys = explode(",", $request->query('fields'));
-        if(count($getKeys) === 2)
+        // dd(array_keys($request->query('fields'))[0]);
+        // $getKeys = explode(",", $request->query('fields'));
+        // if(count($getKeys) === 2)
             return $this->filters = QueryBuilder::for($this->table)
-                ->allowedFields([$getKeys[0], $getKeys[1]])
+                ->allowedFields([$request->query('fields')])
                 ->paginate($request->query('paginate'));
     }
 

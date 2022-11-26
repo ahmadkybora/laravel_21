@@ -8,9 +8,12 @@ use App\Http\Requests\ArticleCategoryRequest;
 use App\Repositories\Repository;
 use App\Models\ArticleCategory;
 use App\Filters\Filter;
+use App\Traits\FilterTrait;
 
 class ArticleCategoryController extends Controller
 {
+    use FilterTrait;
+
     protected $article_category;
     protected $article_categories = [];
     protected $filter;
@@ -28,11 +31,13 @@ class ArticleCategoryController extends Controller
      */
     public function index(Request $request)
     {
-        if($request->query('include'))
-            $this->article_categories = $this->filter->filterByRelationship($request);
+        // if($request->query('include'))
+        //     $this->article_categories = $this->filter->filterByRelationship($request);
 
-        if($request->query('fields'))
-            $this->article_categories = $this->filter->filterByMultiColumn($request);
+        // if($request->query('fields'))
+        //     $this->article_categories = $this->filter->filterByMultiColumn($request);
+
+        $this->article_categories = $this->filter($request, $this->article_category, $this->filter);
 
         return response()->json([
             'state' => true,

@@ -9,9 +9,13 @@ use App\Filters\Filter;
 use App\Http\Requests\UserRequest;
 use App\Http\Controllers\Controller;
 use Spatie\QueryBuilder\QueryBuilder;
+use Spatie\QueryBuilder\AllowedFilter;
+use App\Traits\FilterTrait;
 
 class UserController extends Controller
 {
+    use FilterTrait;
+
     protected $user;
     protected $users = [];
     protected $filter;
@@ -68,24 +72,32 @@ class UserController extends Controller
             //     ->latest()
             //     ->paginate(10);
 
-        if($request->query('filter'))
-            $this->users = $this->filter->filterByOneColumn($request);
+        // if($request->query('filter')) {
+        //     $this->users = $this->filter->filterByOneColumn($request);
+        // } else if($request->query('include')) {
+        //     $this->users = $this->filter->filterByRelationship($request);
+        // } else if($request->query('sort')) {
+        //     $this->users = $this->filter->filterBySort($request);
+        // } else if($request->query('fields')) {
+        //     $this->users = $this->filter->filterByMultiColumn($request);
+        // } else if($request->query('all')) {
+        //     $this->users = $this->user->all();
+        // } else if($request->query('allAndPaginate')) {
+        //     $this->users = User::select('id', 'first_name', 'last_name', 'username', 'email')
+        //         ->paginate($request->query('allAndPaginate'));
+        // }
 
-        if($request->query('include'))
-            $this->users = $this->filter->filterByRelationship($request);
+        // $this->users = $this->filters = QueryBuilder::for(User::class)
+        //     ->allowedFilters(['first_name'])
+            // ->allowedFilters([AllowedFilter::exact('username'), AllowedFilter::exact('email')])
+            // ->get();
+            // ->paginate($request->query('paginate'));
+        $this->users = $this->filter($request, $this->user, $this->filter);
 
-        if($request->query('sort'))
-            $this->users = $this->filter->filterBySort($request);
+        // if($request->query('allAndPaginate'))
+        //     $this->users = User::select('id', 'first_name', 'last_name', 'username', 'email')
+        //         ->paginate($request->query('allAndPaginate'));
 
-        if($request->query('fields'))
-            $this->users = $this->filter->filterByMultiColumn($request);
-
-        if($request->query('all'))
-            $this->users = $this->user->all();
-
-        if($request->query('allAndPaginate'))
-            $this->users = User::select('id', 'first_name', 'last_name', 'username', 'email')
-                ->paginate($request->query('allAndPaginate'));
 
         if($this->users)
             return response()->json([
