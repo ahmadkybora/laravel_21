@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Requests;
-
+use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Http\FormRequest;
 
 class AuthRequest extends FormRequest

@@ -98,7 +98,10 @@ class UserController extends Controller
         //     $this->users = User::select('id', 'first_name', 'last_name', 'username', 'email')
         //         ->paginate($request->query('allAndPaginate'));
 
-
+        // foreach($this->users as $key => $index) {
+        //     dd($index['email']);
+        // }
+        // dd($this->users);
         if($this->users)
             return response()->json([
                 'state' => true,

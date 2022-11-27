@@ -7,14 +7,21 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\BankRequest;
 use App\Repositories\Repository;
 use App\Models\Bank;
+use App\Filters\Filter;
+use App\Traits\FilterTrait;
 
 class BankController extends Controller
 {
+    use FilterTrait;
+    
     protected $bank;
+    protected $banks = [];
     protected $filter;
+
     public function __construct(Bank $bank)
     {
         $this->bank = new Repository($bank);
+        $this->filter = new Filter(Bank::class);
         // $this->filter = new Filter($user);
     }
 
@@ -25,11 +32,14 @@ class BankController extends Controller
      */
     public function index(Request $request)
     {
-        return response()->json([
-            'state' => true,
-            'message' => __('general.success'),
-            'data' => $this->bank->all(),
-        ], 200);
+        $this->banks = $this->filter($request, $this->bank, $this->filter);
+
+        if($this->banks)
+            return response()->json([
+                'state' => true,
+                'message' => __('general.success'),
+                'data' => $this->banks,
+            ], 200);
     }
 
     /**

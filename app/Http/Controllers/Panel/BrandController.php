@@ -7,14 +7,21 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\BrandRequest;
 use App\Repositories\Repository;
 use App\Models\Brand;
+use App\Filters\Filter;
+use App\Traits\FilterTrait;
 
 class BrandController extends Controller
 {
+    use FilterTrait;
+    
     protected $brand;
+    protected $brands = [];
     protected $filter;
+
     public function __construct(Brand $brand)
     {
         $this->brand = new Repository($brand);
+        $this->filter = new Filter(Brand::class);
         // $this->filter = new Filter($user);
     }
 
@@ -25,11 +32,14 @@ class BrandController extends Controller
      */
     public function index(Request $request)
     {
-        return response()->json([
-            'state' => true,
-            'message' => __('general.success'),
-            'data' => $this->brand->all(),
-        ], 200);
+        $this->brands = $this->filter($request, $this->brand, $this->filter);
+
+        if($this->brands)
+            return response()->json([
+                'state' => true,
+                'message' => __('general.success'),
+                'data' => $this->brands,
+            ], 200);
     }
 
     /**

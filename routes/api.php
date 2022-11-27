@@ -15,33 +15,33 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    Route::get('logout', [AuthController::class, 'logout'])->name('logout');
-    return $request->user();
-});
+Route::middleware(['auth:sanctum'])->group(function () {
+    // Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 
-// Route::middleware('policy')->group(function () {
-    Route::prefix('panel')->group(function () {
-        Route::namespace('Panel')->group(function () {
-            Route::resource('users', 'UserController');
-            Route::resource('article-categories', 'ArticleCategoryController');
-            Route::resource('articles', 'ArticleController');
-            Route::resource('product-categories', 'ProductCategoryController');
-            Route::resource('products', 'ProductController');
-            Route::resource('banks', 'BankController');
-            Route::resource('brands', 'BrandController');
-            Route::resource('transactions', 'TransactionController');
-            Route::resource('orders', 'OrderController');
-            Route::resource('wallets', 'WalletController');
-            Route::resource('carts', 'CartController');
+
+    Route::middleware('policy')->group(function () {
+        Route::prefix('panel')->group(function () {
+            Route::namespace('Panel')->group(function () {
+                Route::resource('users', 'UserController');
+                Route::resource('article-categories', 'ArticleCategoryController');
+                Route::resource('articles', 'ArticleController');
+                Route::resource('product-categories', 'ProductCategoryController');
+                Route::resource('products', 'ProductController');
+                Route::resource('banks', 'BankController');
+                Route::resource('brands', 'BrandController');
+                Route::resource('transactions', 'TransactionController');
+                Route::resource('orders', 'OrderController');
+                Route::resource('wallets', 'WalletController');
+                Route::resource('carts', 'CartController');
+            });
         });
     });
-// });
+});
 /*
  * Authentication Routes.
  */
-// Route::namespace('Auth')->group(function () {
-//     Route::post('register', [AuthController::class, 'register'])->name('register');
-//     Route::post('login', [AuthController::class, 'login'])->name('login');
-// });
+Route::namespace('Auth')->group(function () {
+    Route::post('login', 'AuthController@login')->name('login');
+    Route::post('register', 'AuthController@register')->name('register');
+});
 

@@ -17,6 +17,7 @@ class ArticleCategoryController extends Controller
     protected $article_category;
     protected $article_categories = [];
     protected $filter;
+    
     public function __construct(ArticleCategory $article_category)
     {
         $this->article_category = new Repository($article_category);
@@ -38,12 +39,13 @@ class ArticleCategoryController extends Controller
         //     $this->article_categories = $this->filter->filterByMultiColumn($request);
 
         $this->article_categories = $this->filter($request, $this->article_category, $this->filter);
-
-        return response()->json([
-            'state' => true,
-            'message' => __('general.success'),
-            'data' => $this->article_categories,
-        ], 200);
+        
+        if($this->article_categories)
+            return response()->json([
+                'state' => true,
+                'message' => __('general.success'),
+                'data' => $this->article_categories,
+            ], 200);
     }
 
     /**

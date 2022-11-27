@@ -29,6 +29,7 @@ class UserPolicy
      */
     public function view(User $user, User $model)
     {
+        dd($user);
         return $user->can('view-users');
     }
 

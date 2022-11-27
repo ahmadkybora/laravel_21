@@ -7,14 +7,21 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ArticleRequest;
 use App\Repositories\Repository;
 use App\Models\Article;
+use App\Filters\Filter;
+use App\Traits\FilterTrait;
 
 class ArticleController extends Controller
 {
+    use FilterTrait;
+    
     protected $article;
+    protected $articles = [];
     protected $filter;
+
     public function __construct(Article $article)
     {
         $this->article = new Repository($article);
+        $this->filter = new Filter(Article::class);
         // $this->filter = new Filter($user);
     }
 
@@ -25,11 +32,14 @@ class ArticleController extends Controller
      */
     public function index(Request $request)
     {
-        return response()->json([
-            'state' => true,
-            'message' => __('general.success'),
-            'data' => $this->article->all(),
-        ], 200);
+        $this->articles = $this->filter($request, $this->article, $this->filter);
+        
+        if($this->articles)
+            return response()->json([
+                'state' => true,
+                'message' => __('general.success'),
+                'data' => $this->articles,
+            ], 200);
     }
 
     /**

@@ -53,6 +53,7 @@ class Filter
     public function filterByMultiColumn($request)
     {
         // dd(array_keys($request->query('fields'))[0]);
+        // dd(array_keys($request->query('fields'))[0]);
         // $getKeys = explode(",", $request->query('fields'));
         // if(count($getKeys) === 2)
             return $this->filters = QueryBuilder::for($this->table)
@@ -60,16 +61,16 @@ class Filter
                 ->paginate($request->query('paginate'));
     }
 
-    public function filterByExact($request)
-    {
-        $getKeys = array_keys($request->query('filter'));
-        for($i = 0; $i < count($getKeys); $i++) {
-            $this->filters = QueryBuilder::for($table)
-                ->allowedFilters([AllowedFilter::exact($getKeys[$i])])
-                ->paginate($request->query('paginate'));
-        }
-        return $this->filters;
-    }
+    // public function filterByExact($request)
+    // {
+    //     $getKeys = array_keys($request->query('filter'));
+    //     for($i = 0; $i < count($getKeys); $i++) {
+    //         $this->filters = QueryBuilder::for($table)
+    //             ->allowedFilters([AllowedFilter::exact($getKeys[$i])])
+    //             ->paginate($request->query('paginate'));
+    //     }
+    //     return $this->filters;
+    // }
         // dd(count($getKeys));
         // dd($request->query('fields'));
         // $c = fn($getKeys) => (count($getKeys) >= 2) ? $getKeys : $getKeys[2];

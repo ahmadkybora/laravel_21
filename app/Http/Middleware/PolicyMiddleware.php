@@ -19,8 +19,8 @@ class PolicyMiddleware
     {
         switch($request->route()->getName())
         {
-            case 'user-index':
-                if(!Gate::denies('view', $request->user()))
+            case 'users.index':
+                if(Gate::denies('view-users', $request->user()))
                     return response()->json([
                         'state' => false,
                         'message' => __('general.accessDenied'),
