@@ -17,7 +17,8 @@ class UserPolicy
      */
     public function viewAny(User $user)
     {
-        //
+        // dd($user);
+        return $user->can('view-users');
     }
 
     /**
@@ -29,8 +30,8 @@ class UserPolicy
      */
     public function view(User $user, User $model)
     {
-        dd($user);
-        return $user->can('view-users');
+        // dd($user);
+        return $user->can('view-user');
     }
 
     /**

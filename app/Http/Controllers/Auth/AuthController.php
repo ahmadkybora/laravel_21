@@ -18,10 +18,9 @@ class AuthController extends Controller
         ])) 
         {
             $user = $request->user();
-            $tokenResult = $user->createToken('Api Token');
-            $token = $tokenResult->token;
+            $token = $user->createToken('Api Token')->plainTextToken;
 
-            if($token->save())
+            if($token)
                 return response()->json([
                     'state' => true,
                     'message' => __('auth.loggedIn'), 
@@ -30,7 +29,7 @@ class AuthController extends Controller
                         'firstName' => $user->first_name,
                         'lastName' => $user->last_name,
                         'email' => $user->email,
-                        'token' => $tokenResult->accessToken,
+                        'token' => $token,
                         'token_type' => 'Bearer', 
                         'userName' => $user->username,
                     ]
