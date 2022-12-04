@@ -43,6 +43,9 @@ class CreateUsersTable extends Migration
         $admin->email_verified_at = now();
         $admin->secret_key = rand(1,9);
         $admin->password = Hash::make("12345678");
+        $imgUrl = public_path('storage/images/avatars/avatar-admin.png');
+        $path = Storage::disk('public')->putFile('images/avatars', $imgUrl);
+        $admin->avatar = $path;
         $admin->save();
 
         $user = new \App\Models\User();
@@ -53,6 +56,9 @@ class CreateUsersTable extends Migration
         $user->email_verified_at = now();
         $user->secret_key = rand(1,8);
         $user->password = Hash::make("12345678");
+        $imgUrl = public_path('storage/images/avatars/avatar-user.png');
+        $path = Storage::disk('public')->putFile('images/avatars', $imgUrl);
+        $user->avatar = $path;
         $user->save();
     }
 

@@ -15,7 +15,6 @@ class CartController extends Controller
     public function __construct(Cart $cart)
     {
         $this->cart = new Repository($cart);
-        // $this->filter = new Filter($user);
     }
 
     /**
@@ -30,16 +29,6 @@ class CartController extends Controller
             'message' => __('general.success'),
             'data' => $this->cart->all(),
         ], 200);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
     }
 
     /**

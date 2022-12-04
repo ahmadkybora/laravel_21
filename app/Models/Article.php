@@ -31,6 +31,11 @@ class Article extends Model
         return $this->belongsTo('App\Models\User', 'user_id');
     }
 
+    public function category()
+    {
+        return $this->belongsTo('App\Models\ArticleCategory', 'category_id');
+    }
+
     public function comments()
     {
         return $this->morphToMany('App\Models\User', 'comments', 'comments')

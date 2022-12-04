@@ -22,7 +22,6 @@ class ArticleController extends Controller
     {
         $this->article = new Repository($article);
         $this->filter = new Filter(Article::class);
-        // $this->filter = new Filter($user);
     }
 
     /**
@@ -33,23 +32,12 @@ class ArticleController extends Controller
     public function index(Request $request)
     {
         $this->articles = $this->filter($request, $this->article, $this->filter);
-        
         if($this->articles)
             return response()->json([
                 'state' => true,
                 'message' => __('general.success'),
                 'data' => $this->articles,
             ], 200);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -60,7 +48,24 @@ class ArticleController extends Controller
      */
     public function store(ArticleRequest $request)
     {
-        //
+        $article = new Article();
+        $article->title = $request->input('title');
+        $article->title = $request->input('description');
+        $article->author()->associate($request->input('user_id'));
+        $article->category()->associate($request->input('category_id'));
+        if($request->hasFile('image'))
+        {
+            $path = Storage::disk('public')->putFile('images/articles', $request->file('image'));
+            if (!empty($user->avatar_uri) and file_exists('storage/' . $user->avatar_uri));
+            Storage::disk('public')->delete($user->avatar_uri);
+            $user->avatar_uri = $path;
+        }
+        if($article->save())
+            return response()->json([
+                'state' => true,
+                'message' => __('general.success'),
+                'data' => '',
+            ], 200);
     }
 
     /**
@@ -71,18 +76,12 @@ class ArticleController extends Controller
      */
     public function show(Article $article)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Article  $article
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Article $article)
-    {
-        //
+        if($article)
+            return response()->json([
+                'state' => true,
+                'message' => 'success',
+                'data' => $article,
+            ], 200);
     }
 
     /**
@@ -94,7 +93,23 @@ class ArticleController extends Controller
      */
     public function update(ArticleRequest $request, Article $article)
     {
-        //
+        $article->title = $request->input('title');
+        $article->title = $request->input('description');
+        $article->author()->associate($request->input('user_id'));
+        $article->category()->associate($request->input('category_id'));
+        if($request->hasFile('image'))
+        {
+            $path = Storage::disk('public')->putFile('images/articles', $request->file('image'));
+            if (!empty($user->avatar_uri) and file_exists('storage/' . $user->avatar_uri));
+            Storage::disk('public')->delete($user->avatar_uri);
+            $user->avatar_uri = $path;
+        }
+        if($article->save())
+            return response()->json([
+                'state' => true,
+                'message' => __('general.success'),
+                'data' => '',
+            ], 200);
     }
 
     /**

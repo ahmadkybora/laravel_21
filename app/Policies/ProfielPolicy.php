@@ -2,10 +2,11 @@
 
 namespace App\Policies;
 
+use App\Models\Profiel;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class UserPolicy
+class ProfielPolicy
 {
     use HandlesAuthorization;
 
@@ -17,25 +18,19 @@ class UserPolicy
      */
     public function viewAny(User $user)
     {
-        // return (!(!$user->hasRole('super-admin') and $model->hasRole('super-admin')) and $user->can('view-users') ? true : $user->id == $model->id);
-        // dd(!$user->can('view-users'));
-        // dd($user->hasRole('super-admin'));
-        // return false;
-        // return $user->hasRole('super-admin');
-        return $user->can('view-users');
+        //
     }
 
     /**
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\User  $model
+     * @param  \App\Models\Profiel  $profiel
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, User $model)
+    public function view(User $user, Profiel $profiel)
     {
-        // dd($user);
-        return (!(!$user->hasRole('super-admin') and $model->hasRole('super-admin')) and $user->can('view-user') ? true : $user->id == $model->id);
+        //
     }
 
     /**
@@ -46,54 +41,54 @@ class UserPolicy
      */
     public function create(User $user)
     {
-        return $user->can('create-user');
+        //
     }
 
     /**
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\User  $model
+     * @param  \App\Models\Profiel  $profiel
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, User $model)
+    public function update(User $user, Profiel $profiel)
     {
-        return (!(!$user->hasRole('super-admin') and $model->hasRole('super-admin')) and $user->can('update-user') ? true : $user->id == $model->id);
+        //
     }
 
     /**
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\User  $model
+     * @param  \App\Models\Profiel  $profiel
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, User $model)
+    public function delete(User $user, Profiel $profiel)
     {
-        return (!(!$user->hasRole('super-admin') and $model->hasRole('super-admin')) and $user->can('delete-user'));
+        //
     }
 
     /**
      * Determine whether the user can restore the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\User  $model
+     * @param  \App\Models\Profiel  $profiel
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, User $model)
+    public function restore(User $user, Profiel $profiel)
     {
-        return false;
+        //
     }
 
     /**
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\User  $model
+     * @param  \App\Models\Profiel  $profiel
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, User $model)
+    public function forceDelete(User $user, Profiel $profiel)
     {
-        return false;
+        //
     }
 }

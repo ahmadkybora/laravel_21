@@ -22,7 +22,6 @@ class BrandController extends Controller
     {
         $this->brand = new Repository($brand);
         $this->filter = new Filter(Brand::class);
-        // $this->filter = new Filter($user);
     }
 
     /**
@@ -33,7 +32,6 @@ class BrandController extends Controller
     public function index(Request $request)
     {
         $this->brands = $this->filter($request, $this->brand, $this->filter);
-
         if($this->brands)
             return response()->json([
                 'state' => true,
@@ -43,24 +41,21 @@ class BrandController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreBrandRequest  $request
+     * @param  \App\Http\Requests\BrandRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreBrandRequest $request)
+    public function store(BrandRequest $request)
     {
-        //
+        $brand = new Brand();
+        $brand->name = $request->input('brand');
+        if($brand->save())
+            return response()->json([
+                'state' => true,
+                'message' => __('general.success'),
+                'data' => '',
+            ], 200);
     }
 
     /**
@@ -71,30 +66,30 @@ class BrandController extends Controller
      */
     public function show(Brand $brand)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Brand  $brand
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Brand $brand)
-    {
-        //
+        if($brands)
+            return response()->json([
+                'state' => true,
+                'message' => __('general.success'),
+                'data' => $brands,
+            ], 200);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateBrandRequest  $request
+     * @param  \App\Http\Requests\BrandRequest  $request
      * @param  \App\Models\Brand  $brand
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateBrandRequest $request, Brand $brand)
+    public function update(BrandRequest $request, Brand $brand)
     {
-        //
+        $brand->name = $request->input('brand');
+        if($brand->save())
+            return response()->json([
+                'state' => true,
+                'message' => __('general.success'),
+                'data' => '',
+            ], 200);
     }
 
     /**

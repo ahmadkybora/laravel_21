@@ -7,15 +7,21 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductCategoryRequest;
 use App\Repositories\Repository;
 use App\Models\ProductCategory;
+use App\Filters\Filter;
+use App\Traits\FilterTrait;
 
 class ProductCategoryController extends Controller
 {
+    use FilterTrait;
+
     protected $product_category;
+    protected $product_categories = [];
     protected $filter;
+
     public function __construct(ProductCategory $product_category)
     {
         $this->product_category = new Repository($product_category);
-        // $this->filter = new Filter($user);
+        $this->filter = new Filter(Bank::class);
     }
 
     /**
@@ -25,21 +31,12 @@ class ProductCategoryController extends Controller
      */
     public function index(Request $request)
     {
+        $this->product_categories = $this->filter($request, $this->bank, $this->filter);
         return response()->json([
             'state' => true,
             'message' => __('general.success'),
-            'data' => $this->product_category->all(),
+            'data' => $this->product_categories,
         ], 200);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -50,7 +47,15 @@ class ProductCategoryController extends Controller
      */
     public function store(ProductCategoryRequest $request)
     {
-        //
+        $product_category = new ProductCategory();
+        $product_category->brand()->associate($request->input('brand_id'));
+        $product_category->title = $request->input('title');
+        if($product_category->save())
+            return response()->json([
+                'state' => true,
+                'message' => __('general.success'),
+                'data' => '',
+            ], 200);
     }
 
     /**
@@ -61,18 +66,12 @@ class ProductCategoryController extends Controller
      */
     public function show(ProductCategory $product_category)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\ProductCategory  $article
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(ProductCategory $product_category)
-    {
-        //
+        if($product_category)
+            return response()->json([
+                'state' => true,
+                'message' => __('general.success'),
+                'data' => $product_category,
+            ], 200);
     }
 
     /**
@@ -84,7 +83,14 @@ class ProductCategoryController extends Controller
      */
     public function update(ProductCategoryRequest $request, ProductCategory $product_category)
     {
-        //
+        $product_category->brand()->associate($request->input('brand_id'));
+        $product_category->title = $request->input('title');
+        if($product_category->save())
+            return response()->json([
+                'state' => true,
+                'message' => __('general.success'),
+                'data' => '',
+            ], 200);
     }
 
     /**

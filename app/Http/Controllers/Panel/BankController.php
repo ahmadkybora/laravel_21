@@ -22,7 +22,6 @@ class BankController extends Controller
     {
         $this->bank = new Repository($bank);
         $this->filter = new Filter(Bank::class);
-        // $this->filter = new Filter($user);
     }
 
     /**
@@ -33,23 +32,12 @@ class BankController extends Controller
     public function index(Request $request)
     {
         $this->banks = $this->filter($request, $this->bank, $this->filter);
-
         if($this->banks)
             return response()->json([
                 'state' => true,
                 'message' => __('general.success'),
                 'data' => $this->banks,
             ], 200);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -60,7 +48,15 @@ class BankController extends Controller
      */
     public function store(BankRequest $request)
     {
-        //
+        $bank = new Bank();
+        $bank->title = $request->input('title');
+        $bank->account_number = $request->input('account_number');
+        if($bank->save())
+            return response()->json([
+                'state' => true,
+                'message' => __('general.success'),
+                'data' => '',
+            ], 200);
     }
 
     /**
@@ -71,18 +67,12 @@ class BankController extends Controller
      */
     public function show(Bank $bank)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Bank  $bank
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Bank $bank)
-    {
-        //
+        if($bank)
+            return response()->json([
+                'state' => true,
+                'message' => __('general.success'),
+                'data' => $bank,
+            ], 200);
     }
 
     /**
@@ -94,7 +84,14 @@ class BankController extends Controller
      */
     public function update(BankRequest $request, Bank $bank)
     {
-        //
+        $bank->title = $request->input('title');
+        $bank->account_number = $request->input('account_number');
+        if($bank->save())
+            return response()->json([
+                'state' => true,
+                'message' => __('general.success'),
+                'data' => '',
+            ], 200);
     }
 
     /**

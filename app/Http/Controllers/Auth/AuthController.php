@@ -3,14 +3,14 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\AuthRequest;
+use App\Http\Requests\UserRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
-    public function login(AuthRequest $request)
+    public function login(UserRequest $request)
     {
         if(Auth::attempt([
             'username' => $request->input('username'), 
@@ -42,7 +42,7 @@ class AuthController extends Controller
         ], 403);
     }
     
-    public function register(AuthRequest $request)
+    public function register(UserRequest $request)
     {
         $user = new User();
         $user->first_name = $request->input('first_name');
@@ -53,6 +53,7 @@ class AuthController extends Controller
         $user->postal_code = $request->input('postal_code');
         $user->home_address = $request->input('home_address');
         $user->work_address = $request->input('work_address');
+        $admin->secret_key = rand(1,9);
         $user->password = Hash::make($request->input('password'));
         if ($user->save())
             return response()->json([

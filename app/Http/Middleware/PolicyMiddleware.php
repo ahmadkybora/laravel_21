@@ -18,17 +18,18 @@ class PolicyMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        $resp = response()->json([
-            'state' => false,
-            'message' => __('general.accessDenied'),
-            'data' => null,
-        ], 403);
+        // $resp = response()->json([
+        //     'state' => false,
+        //     'message' => __('general.accessDenied'),
+        //     'data' => null,
+        // ], 403);
 
-        switch($request->route()->getName())
-        {
-            case 'users.index':
-                if(Gate::denies('view-any', User::class))
-                return $resp;
+        // switch($request->route()->getName())
+        // {
+            // case 'users.index':
+            //     if(Gate::denies('view-any', User::class))
+            //     // break;
+            //     return $resp;
 
             // case 'users.create':
             //     if(!Gate::denies('create', $request->user()))
@@ -50,8 +51,8 @@ class PolicyMiddleware
             //     if(!Gate::denies('delete', $request->user()))
             //     break;
 
-            default;
-        }
+        //     default;
+        // }
 
         return $next($request);
     }

@@ -90,4 +90,5 @@ class User extends Authenticatable
             ->withPivot('description', 'state')
             ->withTimestamps();
     }
+    
 }
