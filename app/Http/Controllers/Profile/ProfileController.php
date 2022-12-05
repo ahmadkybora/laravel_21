@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers\Profile;
 
-use App\Http\Requests\ProfileRequest;
+use App\Http\Requests\StoreProfileRequest;
+use App\Http\Requests\UpdateProfileRequest;
 use App\Models\Profile;
 
 class ProfileController extends Controller
@@ -30,10 +31,10 @@ class ProfileController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\ProfileRequest  $request
+     * @param  \App\Http\Requests\StoreProfileRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(ProfileRequest $request)
+    public function store(StoreProfileRequest $request)
     {
         //
     }
@@ -41,7 +42,7 @@ class ProfileController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Profile  $profiel
+     * @param  \App\Models\Profile  $profile
      * @return \Illuminate\Http\Response
      */
     public function show(Profile $profile)
@@ -52,7 +53,7 @@ class ProfileController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Profile  $profiel
+     * @param  \App\Models\Profile  $profile
      * @return \Illuminate\Http\Response
      */
     public function edit(Profile $profile)
@@ -63,11 +64,11 @@ class ProfileController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\ProfileRequest  $request
-     * @param  \App\Models\Profile  $profiel
+     * @param  \App\Http\Requests\UpdateProfileRequest  $request
+     * @param  \App\Models\Profile  $profile
      * @return \Illuminate\Http\Response
      */
-    public function update(ProfileRequest $request, Profile $profile)
+    public function update(UpdateProfileRequest $request, Profile $profile)
     {
         //
     }
@@ -75,7 +76,7 @@ class ProfileController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Profile  $profiel
+     * @param  \App\Models\Profile  $profile
      * @return \Illuminate\Http\Response
      */
     public function destroy(Profile $profile)

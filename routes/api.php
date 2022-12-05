@@ -33,6 +33,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
                 Route::resource('orders', 'OrderController');
                 Route::resource('wallets', 'WalletController');
                 Route::resource('carts', 'CartController');
+                Route::resource('permissions', 'PermissionController');
             });
         });
     });

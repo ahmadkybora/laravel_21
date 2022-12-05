@@ -4,9 +4,12 @@ namespace App\Http\Controllers\Panel;
 
 use Illuminate\Http\Request;
 use App\Traits\FilterTrait;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Permission;
+use App\Http\Requests\PermissionRequest;
+use App\Models\User;
 
 class PermissionController extends Controller
 {
@@ -32,61 +35,38 @@ class PermissionController extends Controller
     public function index(Request $request)
     {
 
-        $this->users = $this->filter($request, $this->user, $this->filter);
+        // $this->users = $this->filter($request, $this->user, $this->filter);
 
-        if($this->users)
+        // if($this->users)
             return response()->json([
                 'state' => true,
                 'message' => __('general.success'),
-                'data' => $this->users
+                'data' => Permission::all(['id', 'name'])
             ], 200);
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created resource in storage.   
      *
-     * @param  \App\Http\Requests\UserRequest  $request
+     * @param  \App\Http\Requests\PermissionRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(UserRequest $request)
+    public function store(PermissionRequest $request)
     {
-        // هر چیزی داخل filable مدل هس رو ذخیره کن
-        // return $this->user->create($request->only($this->user->getModel()->fillable));
-
-        $user = new User();
-        $user->first_name = $request->input('first_name');
-        $user->last_name = $request->input('last_name');
-        $user->username = $request->input('username');
-        $user->email = $request->input('email');
-        $user->mobile = $request->input('mobile');
-        $user->postal_code = $request->input('postal_code');
-        $user->home_address = $request->input('home_address');
-        $user->work_address = $request->input('work_address');
-        $user->secret_key = rand(1,9);
-        $user->password = Hash::make($request->input('password'));
-        if($request->hasFile('avatar'))
-        {
-            $path = Storage::disk('public')->putFile('images/avatars', $request->file('avatar'));
-            if (!empty($user->avatar_uri) and file_exists('storage/' . $user->avatar_uri));
-            Storage::disk('public')->delete($user->avatar_uri);
-            $user->avatar_uri = $path;
+        $userId = $request->input('user_id');
+        $user = User::find($userId);
+        foreach($request->input('permissions') as $index => $permission) {
+            $user->givePermissionTo($permission);
         }
-
-        if($user->save())
-            return response()->json([
-                'state' => true,
-                'message' => 'success',
-                'data' => null,
-            ], 200);
     }
     
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\User  $wallet
+     * @param  \App\Models\Permission  $wallet
      * @return \Illuminate\Http\Response
      */
-    public function show(User $user)
+    public function show(Permission $user)
     {
         if($user)
             return response()->json([
@@ -97,60 +77,25 @@ class PermissionController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Update the specified resource in storage.
      *
-     * @param  \App\Models\User  $wallet
+     * @param  \App\Http\Requests\PermissionRequest  $request
+     * @param  \App\Models\Permission  $wallet
      * @return \Illuminate\Http\Response
      */
-    public function edit(User $user)
+    public function update(PermissionRequest $request, Permission $user)
     {
         //
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UserRequest  $request
-     * @param  \App\Models\User  $wallet
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UserRequest $request, User $user)
-    {
-        $user->first_name = $request->input('first_name');
-        $user->last_name = $request->input('last_name');
-        $user->mobile = $request->input('mobile');
-        $user->postal_code = $request->input('postal_code');
-        $user->home_address = $request->input('home_address');
-        $user->work_address = $request->input('work_address');
-        if($request->hasFile('avatar'))
-        {
-            $path = Storage::disk('public')->putFile('images/avatars', $request->file('avatar'));
-            if (!empty($user->avatar_uri) and file_exists('storage/' . $user->avatar_uri));
-            Storage::disk('public')->delete($user->avatar_uri);
-            $user->avatar_uri = $path;
-        }
-
-        if($user->save())
-            return response()->json([
-                'state' => true,
-                'message' => 'success',
-                'data' => null,
-            ], 200);
-    }
-
-    /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\User  $wallet
+     * @param  \App\Models\Permission  $wallet
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user)
+    public function destroy(Permission $permission)
     {
-        if($user->delete())
-            return response()->json([
-                'state' => true,
-                'message' => 'success',
-                'data' => null,
-            ], 200);
+        //
     }
 }

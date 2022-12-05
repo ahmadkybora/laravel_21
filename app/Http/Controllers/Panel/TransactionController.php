@@ -7,11 +7,16 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\TransactionRequest;
 use App\Repositories\Repository;
 use App\Models\Transaction;
+use App\Traits\FilterTrait;
 
 class TransactionController extends Controller
 {
+    use FilterTrait;
+
     protected $transaction;
+    protected $transactions = [];
     protected $filter;
+
     public function __construct(Transaction $transaction)
     {
         $this->transaction = new Repository($transaction);
@@ -25,21 +30,12 @@ class TransactionController extends Controller
      */
     public function index(Request $request)
     {
+        $this->transactions = $this->filter($request, $this->transaction, $this->filter);
         return response()->json([
             'state' => true,
             'message' => __('general.success'),
-            'data' => $this->transaction->all(),
+            'data' => $this->transactions,
         ], 200);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -50,7 +46,17 @@ class TransactionController extends Controller
      */
     public function store(TransactionRequest $request)
     {
-        //
+        $transaction = new Transaction();
+        $transaction->owner()->associate($request->input('user_id'));
+        $transaction->bank()->associate($request->input('bank_id'));
+        $transaction->transaction_code = $request->input('transaction_code');
+        $transaction->amount = $request->input('amount');
+        if($transaction->save())
+            return response()->json([
+                'state' => true,
+                'message' => __('general.success'),
+                'data' => '',
+            ], 200);
     }
 
     /**
@@ -61,18 +67,12 @@ class TransactionController extends Controller
      */
     public function show(Transaction $transaction)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Transaction  $transaction
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Transaction $transaction)
-    {
-        //
+        if($transaction)
+            return response()->json([
+                'state' => true,
+                'message' => __('general.success'),
+                'data' => $this->transaction,
+            ], 200);
     }
 
     /**
@@ -84,7 +84,16 @@ class TransactionController extends Controller
      */
     public function update(TransactionRequest $request, Transaction $transaction)
     {
-        //
+        $transaction->owner()->associate($request->input('user_id'));
+        $transaction->bank()->associate($request->input('bank_id'));
+        $transaction->transaction_code = $request->input('transaction_code');
+        $transaction->amount = $request->input('amount');
+        if($transaction->save())
+            return response()->json([
+                'state' => true,
+                'message' => __('general.success'),
+                'data' => '',
+            ], 200);
     }
 
     /**

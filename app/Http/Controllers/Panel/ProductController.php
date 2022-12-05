@@ -7,11 +7,16 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductRequest;
 use App\Repositories\Repository;
 use App\Models\Product;
+use App\Traits\FilterTrait;
 
 class ProductController extends Controller
 {
+    use FilterTrait;
+
     protected $product;
+    protected $products = [];
     protected $filter;
+
     public function __construct(Product $product)
     {
         $this->product = new Repository($product);
@@ -25,21 +30,12 @@ class ProductController extends Controller
      */
     public function index(Request $request)
     {
+        $this->products = $this->filter($request, $this->bank, $this->filter);
         return response()->json([
             'state' => true,
             'message' => __('general.success'),
-            'data' => $this->product->all(),
+            'data' => $this->products,
         ], 200);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -50,7 +46,24 @@ class ProductController extends Controller
      */
     public function store(ProductRequest $request)
     {
-        //
+        $product = new Product();
+        $product->category()->associate($request->input('category_id'));
+        $product->title = $request->input('title');
+        $product->price = $request->input('price');
+        $product->description = $request->input('description');
+        if($request->hasFile('image'))
+        {
+            $path = Storage::disk('public')->putFile('images/products', $request->file('image'));
+            if (!empty($product->image) and file_exists('storage/' . $product->image));
+            Storage::disk('public')->delete($product->image);
+            $product->image = $path;
+        }
+        if($product->save())
+            return response()->json([
+                'state' => true,
+                'message' => __('general.success'),
+                'data' => '',
+            ], 200);
     }
 
     /**
@@ -61,18 +74,12 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Product $product)
-    {
-        //
+        if($product)
+            return response()->json([
+                'state' => true,
+                'message' => __('general.success'),
+                'data' => '',
+            ], 200);
     }
 
     /**
@@ -84,7 +91,23 @@ class ProductController extends Controller
      */
     public function update(ProductRequest $request, Product $product)
     {
-        //
+        $product->category()->associate($request->input('category_id'));
+        $product->title = $request->input('title');
+        $product->price = $request->input('price');
+        $product->description = $request->input('description');
+        if($request->hasFile('image'))
+        {
+            $path = Storage::disk('public')->putFile('images/products', $request->file('image'));
+            if (!empty($product->image) and file_exists('storage/' . $product->image));
+            Storage::disk('public')->delete($product->image);
+            $product->image = $path;
+        }
+        if($product->save())
+            return response()->json([
+                'state' => true,
+                'message' => __('general.success'),
+                'data' => '',
+            ], 200);
     }
 
     /**

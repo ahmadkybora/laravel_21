@@ -100,9 +100,9 @@ class ArticleController extends Controller
         if($request->hasFile('image'))
         {
             $path = Storage::disk('public')->putFile('images/articles', $request->file('image'));
-            if (!empty($user->avatar_uri) and file_exists('storage/' . $user->avatar_uri));
-            Storage::disk('public')->delete($user->avatar_uri);
-            $user->avatar_uri = $path;
+            if (!empty($article->image) and file_exists('storage/' . $article->image));
+            Storage::disk('public')->delete($article->image);
+            $article->image = $path;
         }
         if($article->save())
             return response()->json([

@@ -7,10 +7,14 @@ use App\Http\Requests\WalletRequest;
 use App\Http\Controllers\Controller;
 use App\Repositories\Repository;
 use App\Models\Wallet;
+use App\Traits\FilterTrait;
 
 class WalletController extends Controller
 {
+    use FilterTrait;
+
     protected $wallet;
+    protected $wallets = [];
     protected $filter;
     public function __construct(Wallet $wallet)
     {
@@ -25,21 +29,12 @@ class WalletController extends Controller
      */
     public function index(Request $request)
     {
+        $this->wallets = $this->filter($request, $this->wallet, $this->filter);
         return response()->json([
             'state' => true,
             'message' => __('general.success'),
-            'data' => $this->user->all(),
+            'data' => $this->wallets,
         ], 200);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -61,18 +56,12 @@ class WalletController extends Controller
      */
     public function show(Wallet $wallet)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Wallet  $wallet
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Wallet $wallet)
-    {
-        //
+        if($wallet)
+            return response()->json([
+                'state' => true,
+                'message' => __('general.success'),
+                'data' => $wallet,
+            ], 200);
     }
 
     /**
