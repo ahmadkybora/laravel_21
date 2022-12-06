@@ -58,6 +58,11 @@ class PermissionController extends Controller
         foreach($request->input('permissions') as $index => $permission) {
             $user->givePermissionTo($permission);
         }
+        return response()->json([
+            'state' => true,
+            'message' => __('general.success'),
+            'data' => ''
+        ], 200);
     }
     
     /**

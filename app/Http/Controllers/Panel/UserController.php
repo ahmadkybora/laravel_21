@@ -37,6 +37,13 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
+        if(Gate::denies('view-any', User::class))
+            return response()->json([
+                'state' => false,
+                'message' => __('general.accessDenied'),
+                'data' => null,
+            ], 403);
+
         $this->users = $this->filter($request, $this->user, $this->filter);
         if($this->users)
             return response()->json([
@@ -169,6 +176,13 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
+        if(Gate::denies('view', $user))
+            return response()->json([
+                'state' => false,
+                'message' => __('general.accessDenied'),
+                'data' => null,
+            ], 403);
+
         if($user)
             return response()->json([
                 'state' => true,

@@ -17,6 +17,8 @@ class UserPolicy
      */
     public function viewAny(User $user)
     {
+        // dd($user);
+        // dd($user->can('view-users'));
         // return (!(!$user->hasRole('super-admin') and $model->hasRole('super-admin')) and $user->can('view-users') ? true : $user->id == $model->id);
         // dd(!$user->can('view-users'));
         // dd($user->hasRole('super-admin'));
@@ -34,7 +36,8 @@ class UserPolicy
      */
     public function view(User $user, User $model)
     {
-        // dd($user);
+        return $user->can('view-user');
+        dd($user);
         return (!(!$user->hasRole('super-admin') and $model->hasRole('super-admin')) and $user->can('view-user') ? true : $user->id == $model->id);
     }
 
