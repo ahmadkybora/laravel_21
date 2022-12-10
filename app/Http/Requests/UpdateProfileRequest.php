@@ -13,7 +13,7 @@ class UpdateProfileRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,13 @@ class UpdateProfileRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'first_name' => ['nullable', 'bail', 'string', 'min:2', 'max:150'],
+            'last_name' => ['nullable', 'bail', 'string', 'min:2', 'max:150'],
+            'postal_code'=>['nullable', 'bail', 'string', 'min:2', 'max:150'],
+            'city' => ['nullable', 'bail', 'exists:cities,id'],
+            'home_address'=>['nullable', 'bail', 'string','min:5', 'max:300'],
+            'work_address'=>['nullable', 'bail', 'string','min:5', 'max:300'],
+            'avatar' => ['nullable', 'bail', 'image', 'mimes:jpeg,png', 'max:512']
         ];
     }
 }

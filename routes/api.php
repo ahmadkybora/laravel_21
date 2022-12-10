@@ -36,6 +36,15 @@ Route::middleware(['auth:sanctum'])->group(function () {
                 Route::resource('permissions', 'PermissionController');
             });
         });
+        Route::prefix('profile')->group(function () {
+            Route::namespace('Profile')->group(function () {
+                Route::resource('profile', 'ProfileController');
+                Route::patch('change-password', 'ProfileController@changePassword');
+                Route::get('cart', 'CartController@index');
+                Route::post('cart/add', 'CartController@addToCart');
+                Route::delete('cart/remove', 'CartController@removeFromCart');
+            });
+        });
     });
 });
 /*

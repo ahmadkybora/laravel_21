@@ -17,7 +17,8 @@ class CreateCartsTable extends Migration
             $table->id();
             $table->foreignId('product_id');
             $table->foreignId('user_id')->index();
-            $table->integer("qyt");
+            $table->integer("qty");
+            $table->enum('state', ['PAID', 'CANCELED', 'PENDING', 'UNAVAILABLE', 'CONFIRM'])->nullable();
             $table->timestamps();
         });
     }

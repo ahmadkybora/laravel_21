@@ -10,7 +10,8 @@ class Cart extends Model
     use HasFactory;
 
     protected $fillable = [
-        'qty'
+        'qty',
+        'state'
     ];
 
     protected $guarded = [

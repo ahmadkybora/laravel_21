@@ -43,6 +43,16 @@ class User extends Authenticatable
         'updated_at' => 'datetime:M/d/Y H:i:s',
     ];
 
+    public function carts()
+    {
+        return $this->hasMany('App\Models\Cart', 'user_id', 'id');
+    }
+
+    public function products()
+    {
+        return $this->hasMany('App\Models\Product', 'user_id', 'id');
+    }
+
     public function product_favorites()
     {
         return $this->morphedByMany('App\Models\Product', 'favorites');
