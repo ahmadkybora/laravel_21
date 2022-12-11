@@ -29,7 +29,7 @@ class UserRequest extends FormRequest
         {
             case 'login':
                 $rules = [
-                    'username' => ['bail', 'required', 'string', 'min:5', 'max:30'],
+                    'username' => ['bail', 'required', 'string', 'min:2', 'max:30'],
                     'password' => ['required', 'string', 'min:8', 'max:15'],    
                 ];
                 break;
