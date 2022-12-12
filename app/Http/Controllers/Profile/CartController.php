@@ -18,14 +18,36 @@ class CartController extends Controller
         if($request->query())
             $carts = Cart::where('user_id', $request->user()->id)
                 ->where('state', $request->query('state'))
-                ->get()
-                ->toArray();
+                ->get();
 
+        $total_price = 0;
+        foreach($carts as $cart){
+            $cart->price = $cart->product->price * $cart->qty;
+            $total_price += $cart->price;
+        }
+        // ->toArray();
+        // $price;
+        // $total_price;
+        // $price = $cart->product->price * $cart->qty;
+        // $price = 0;
+        // dd($cart);
+        // dd($price);
+        // $price += $price;
+        // dd($price);
+        // dd($price);
+        // $total_price = $price += $price;
+        // dd($carts);
+        // $price = $cart->product->price * $cart->qty;
+        // dd($price);
         if($carts)
             return response()->json([
                 'state' => true,
                 'message' => __('general.success'),
-                'data' => $carts,
+                'data' => [
+                    'carts' => $carts,
+                    'total_price' => $total_price,
+                    // 'total_price' => $total_price
+                ]
             ], 200);
     }
 
