@@ -22,8 +22,9 @@ class CartController extends Controller
 
         $total_price = 0;
         foreach($carts as $cart){
-            $cart->price = $cart->product->price * $cart->qty;
-            $total_price += $cart->price;
+            $cart->setAttribute('price', $cart->product->price);
+            $cart->setAttribute('qty_price', $cart->product->price * $cart->qty);
+            $total_price += $cart->qty_price;
         }
         // ->toArray();
         // $price;

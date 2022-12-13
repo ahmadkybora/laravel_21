@@ -25,6 +25,10 @@ class Cart extends Model
         'updated_at' => 'datetime:M/d/Y H:i:s',
     ];
 
+    protected $hidden = [
+        'product'
+    ];
+
     public function user()
     {
         return $this->belongsTo('App\Models\User', "user_id");
