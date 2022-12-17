@@ -16,8 +16,11 @@ class ProfileController extends Controller
      * @param  \App\Models\Profile  $profile
      * @return \Illuminate\Http\Response
      */
-    public function show(User $profile)
+    public function show()
     {
+        dd(1);   
+        $profile = auth()->user();
+        dd($profile);
         if($profile)
             return response()->json([
                 'state' => true,
