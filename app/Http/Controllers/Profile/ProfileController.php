@@ -6,6 +6,7 @@ use App\Http\Requests\UpdateProfileRequest;
 use App\Http\Requests\ChangePasswordRequest;
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\Ticket;
 
 class ProfileController extends Controller
 {
@@ -18,7 +19,15 @@ class ProfileController extends Controller
      */
     public function index()
     { 
-        $profile = auth()->user();
+        $profile = auth()->user()->makeHidden([
+            'is_admin',
+            'state',
+            'created_at', 
+            'updated_at'
+        ]);
+
+        $ticket = $profile->unreed_tickets($profile->id);
+        $profile->setAttribute('unreed_tickets', $ticket);
         if($profile)
             return response()->json([
                 'state' => true,
@@ -37,7 +46,6 @@ class ProfileController extends Controller
     public function update(UpdateProfileRequest $request)
     {
         $profile = $request->user();
-        dd($profile->tickets);
         $profile->first_name = $request->input('first_name');
         $profile->last_name = $request->input('last_name');
         $profile->mobile = $request->input('mobile');

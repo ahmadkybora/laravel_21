@@ -34,7 +34,8 @@ class User extends Authenticatable
 
     protected $hidden = [
         'password',
-        'remember_token'
+        'remember_token',
+        'secret_key',
     ];
 
     protected $casts = [
@@ -57,10 +58,10 @@ class User extends Authenticatable
      * شما میتوانید همه طرف روابط را در مدل های خود
      * بنویسید
      */
-    // public function tickets()
-    // {
-    //     return $this->hasMany('App\Models\Ticket' , 'user_id', 'id');
-    // }
+    public function tickets()
+    {
+        return $this->hasMany('App\Models\Ticket' , 'user_id', 'id');
+    }
 
     public function product_favorites()
     {
@@ -110,4 +111,8 @@ class User extends Authenticatable
             ->withTimestamps();
     }
     
+    public function unreed_tickets($profile)
+    {
+        return Ticket::where('user_id', $profile)->whereNull('seen_at')->count();
+    }
 }

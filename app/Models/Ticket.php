@@ -42,4 +42,9 @@ class Ticket extends Model
     {
         return $this->hasMany('App\Models\TicketDetail', 'ticket_id');
     }
+
+    public function unreed_tickets($profile)
+    {
+        return Ticket::where('user_id', $profile)->whereNull('seen_at')->count();
+    }
 }
