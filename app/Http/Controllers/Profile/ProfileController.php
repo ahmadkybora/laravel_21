@@ -16,11 +16,9 @@ class ProfileController extends Controller
      * @param  \App\Models\Profile  $profile
      * @return \Illuminate\Http\Response
      */
-    public function show()
-    {
-        dd(1);   
+    public function index()
+    { 
         $profile = auth()->user();
-        dd($profile);
         if($profile)
             return response()->json([
                 'state' => true,
@@ -36,8 +34,10 @@ class ProfileController extends Controller
      * @param  \App\Models\Profile  $profile
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateProfileRequest $request, User $profile)
+    public function update(UpdateProfileRequest $request)
     {
+        $profile = $request->user();
+        dd($profile->tickets);
         $profile->first_name = $request->input('first_name');
         $profile->last_name = $request->input('last_name');
         $profile->mobile = $request->input('mobile');

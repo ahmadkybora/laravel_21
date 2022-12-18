@@ -53,6 +53,15 @@ class User extends Authenticatable
         return $this->hasMany('App\Models\Product', 'user_id', 'id');
     }
 
+    /**
+     * شما میتوانید همه طرف روابط را در مدل های خود
+     * بنویسید
+     */
+    // public function tickets()
+    // {
+    //     return $this->hasMany('App\Models\Ticket' , 'user_id', 'id');
+    // }
+
     public function product_favorites()
     {
         return $this->morphedByMany('App\Models\Product', 'favorites');

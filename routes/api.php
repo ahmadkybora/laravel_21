@@ -38,8 +38,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
         });
         Route::prefix('profile')->group(function () {
             Route::namespace('Profile')->group(function () {
-                Route::get('show', 'ProfileController@show');
-                Route::patch('update', 'ProfileController@update');
+                Route::get('/', 'ProfileController@index');
+                Route::patch('/', 'ProfileController@update');
                 Route::patch('change-password', 'ProfileController@changePassword');
                 Route::get('cart', 'CartController@index');
                 Route::post('cart/add', 'CartController@addToCart');
