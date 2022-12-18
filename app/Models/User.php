@@ -111,8 +111,11 @@ class User extends Authenticatable
             ->withTimestamps();
     }
     
-    public function unreed_tickets($profile)
+    public function unreed_tickets()
     {
-        return Ticket::where('user_id', $profile)->whereNull('seen_at')->count();
+        return $this->tickets()
+            ->where('user_id', auth()->user()->id)
+            ->whereNull('seen_at')
+            ->count();
     }
 }

@@ -26,7 +26,9 @@ class ProfileController extends Controller
             'updated_at'
         ]);
 
-        $ticket = $profile->unreed_tickets($profile->id);
+        $ticket = $profile->unreed_tickets();
+        $fa = $profile->product_favorites;
+        dd($fa);
         $profile->setAttribute('unreed_tickets', $ticket);
         if($profile)
             return response()->json([
