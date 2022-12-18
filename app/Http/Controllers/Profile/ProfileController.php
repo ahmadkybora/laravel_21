@@ -27,7 +27,7 @@ class ProfileController extends Controller
         ]);
 
         $ticket = $profile->unreed_tickets();
-        $fa = $profile->product_favorites;
+        $fa = $profile->product_favorites->makeHidden(['created_at', 'updated_at'])->toArray();
         dd($fa);
         $profile->setAttribute('unreed_tickets', $ticket);
         if($profile)
